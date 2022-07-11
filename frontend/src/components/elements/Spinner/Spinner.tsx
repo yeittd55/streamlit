@@ -26,7 +26,7 @@ import {
 } from "./styled-components"
 
 export interface SpinnerProps {
-  width: number
+  width: number | string
   element: SpinnerProto
 }
 

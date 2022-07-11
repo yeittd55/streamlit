@@ -20,7 +20,7 @@ import { Progress as ProgressProto } from "src/autogen/proto"
 import ProgressBar from "src/components/shared/ProgressBar"
 
 export interface ProgressProps {
-  width: number
+  width: number | string
   element: ProgressProto
 }
 

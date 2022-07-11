@@ -26,7 +26,7 @@ import {
 } from "./styled-components"
 
 export interface DocStringProps {
-  width: number
+  width: number | string
   element: DocStringProto
 }
 

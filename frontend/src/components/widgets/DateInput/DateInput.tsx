@@ -36,7 +36,7 @@ export interface Props {
   element: DateInputProto
   theme: Theme
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 interface State {

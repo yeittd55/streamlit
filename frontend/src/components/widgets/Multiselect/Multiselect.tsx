@@ -43,7 +43,7 @@ export interface Props {
   element: MultiSelectProto
   theme: Theme
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 interface State {

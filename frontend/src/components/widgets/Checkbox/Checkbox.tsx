@@ -33,7 +33,7 @@ export interface OwnProps {
   disabled: boolean
   element: CheckboxProto
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 interface ThemeProps {

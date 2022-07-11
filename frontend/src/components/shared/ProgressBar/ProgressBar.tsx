@@ -34,7 +34,7 @@ export enum Size {
 }
 
 export interface ProgressBarProps {
-  width?: number
+  width?: number | string
   value: number
   overrides?: Overrides<any>
   size?: Size

@@ -177,7 +177,7 @@ const RawElementNodeRenderer = (
 
   // TODO: Move this into type signature of props. The width is actually guaranteed to be nonzero
   // since leaf elements are always direct children of a VerticalBlock, which always calculates
-  let width = props.width ?? 0
+  let width = props.width ?? 160
 
   // Modify width using the value from the spec as passed with the message when applicable
   if (node.metadata.elementDimensionSpec) {
@@ -185,7 +185,7 @@ const RawElementNodeRenderer = (
       node.metadata.elementDimensionSpec.width &&
       node.metadata.elementDimensionSpec.width > 0
     ) {
-      width = Math.min(node.metadata.elementDimensionSpec.width, width)
+      width = Math.min(node.metadata.elementDimensionSpec.width, 704)
     }
     if (
       node.metadata.elementDimensionSpec.height &&
@@ -618,6 +618,55 @@ const ElementNodeRenderer = (
         elementType={elementType}
       >
         <ErrorBoundary width={width}>
+          <Suspense
+            fallback={
+              <Alert body="Loading..." kind={Kind.INFO} width={width} />
+            }
+          >
+            <RawElementNodeRenderer {...props} />
+          </Suspense>
+        </ErrorBoundary>
+      </StyledElementContainer>
+    </Maybe>
+  )
+}
+
+// Render ElementNodes (i.e. leaf nodes) wrapped in error catchers and all sorts of other //
+// utilities.
+export const TestElementNodeRenderer = (
+  props: ElementNodeRendererProps
+): ReactElement => {
+  const { node } = props
+
+  const elementType = node.element.type || ""
+  const enable = shouldComponentBeEnabled(elementType, props.scriptRunState)
+  const isStale = isComponentStale(
+    enable,
+    node,
+    props.scriptRunState,
+    props.scriptRunId
+  )
+
+  // TODO: Move this into type signature of props. The width is actually guaranteed to be nonzero
+  // since leaf elements are always direct children of a VerticalBlock, which always calculates
+  // and propagates widths.
+  const width = props.width ?? "100%"
+  console.log(width)
+
+  // TODO: If would be great if we could return an empty fragment if isHidden is true, to keep the
+  // DOM clean. But this would require the keys passed to ElementNodeRenderer at Block.tsx to be a
+  // stable hash of some sort.
+
+  return (
+    <Maybe enable={enable}>
+      <StyledElementContainer
+        data-stale={isStale}
+        isStale={isStale}
+        width={width}
+        className={"element-container"}
+        elementType={elementType}
+      >
+        <ErrorBoundary width={160}>
           <Suspense
             fallback={
               <Alert body="Loading..." kind={Kind.INFO} width={width} />

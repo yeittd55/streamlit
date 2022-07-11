@@ -30,7 +30,7 @@ export interface Props {
   disabled: boolean
   element: DownloadButtonProto
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 function DownloadButton(props: Props): ReactElement {

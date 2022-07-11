@@ -27,7 +27,7 @@ import { Theme } from "src/theme"
 import { ensureError } from "src/lib/ErrorHandling"
 
 export interface JsonProps {
-  width: number
+  width: number | string
   element: JsonProto
 }
 

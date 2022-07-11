@@ -20,7 +20,7 @@ import React, { ReactElement } from "react"
 import { Markdown as MarkdownProto } from "src/autogen/proto"
 
 export interface MarkdownProps {
-  width: number
+  width: number | string
   element: MarkdownProto
 }
 

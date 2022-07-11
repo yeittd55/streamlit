@@ -28,7 +28,7 @@ export interface Props {
   disabled: boolean
   element: ButtonProto
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 function Button(props: Props): ReactElement {

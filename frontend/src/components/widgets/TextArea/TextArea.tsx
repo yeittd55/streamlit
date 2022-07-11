@@ -35,7 +35,7 @@ export interface Props {
   disabled: boolean
   element: TextAreaProto
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 interface State {

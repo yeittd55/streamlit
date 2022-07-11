@@ -35,7 +35,7 @@ import {
 
 export interface Props {
   disabled?: boolean
-  width?: number
+  width?: number | string
   value: string
   showValue?: boolean
   label: string

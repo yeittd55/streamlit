@@ -46,7 +46,7 @@ export interface Props {
   element: FileUploaderProto
   widgetMgr: WidgetStateManager
   uploadClient: FileUploadClient
-  width: number
+  width: number | string
 }
 
 type FileUploaderStatus =

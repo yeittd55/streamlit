@@ -30,7 +30,7 @@ export interface Props {
   disabled: boolean
   horizontal: boolean
   theme: Theme
-  width?: number
+  width?: number | string
   value: number
   onChange: (selectedIndex: number) => any
   options: any[]

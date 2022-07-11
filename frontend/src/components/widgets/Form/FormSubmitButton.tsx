@@ -29,7 +29,7 @@ export interface Props {
   element: ButtonProto
   hasInProgressUpload: boolean
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 export function FormSubmitButton(props: Props): ReactElement {

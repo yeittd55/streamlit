@@ -26,7 +26,7 @@ export const StyledDocName = styled.span(({ theme }) => ({
 }))
 
 export interface StyledDocContainerProps {
-  width: number
+  width: number | string
 }
 
 export const StyledDocContainer = styled.span<StyledDocContainerProps>(

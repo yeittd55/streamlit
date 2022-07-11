@@ -25,7 +25,7 @@ export interface Props {
   disabled: boolean
   element: SelectboxProto
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 interface State {

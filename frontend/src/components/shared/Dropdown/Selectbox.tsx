@@ -30,7 +30,7 @@ import {
 
 export interface Props {
   disabled: boolean
-  width?: number
+  width?: number | string
   value: number
   onChange: (value: number) => void
   options: any[]

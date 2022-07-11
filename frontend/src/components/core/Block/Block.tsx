@@ -29,7 +29,7 @@ import {
   isComponentStale,
   shouldComponentBeEnabled,
 } from "./utils"
-import ElementNodeRenderer from "./ElementNodeRenderer"
+import ElementNodeRenderer, { TestElementNodeRenderer } from "./ElementNodeRenderer"
 
 import {
   StyledColumn,
@@ -40,7 +40,7 @@ import {
   styledVerticalBlockWrapperStyles,
 } from "./styled-components"
 
-const ExpandableLayoutBlock = withExpandable(LayoutBlock)
+const ExpandableLayoutBlock = withExpandable(TestLayoutBlock)
 
 interface BlockPropsWithoutWidth extends BaseBlockProps {
   node: BlockNode
@@ -81,7 +81,7 @@ const BlockNodeRenderer = (props: BlockPropsWithWidth): ReactElement => {
   const child = node.deltaBlock.expandable ? (
     <ExpandableLayoutBlock {...childProps} />
   ) : (
-    <LayoutBlock {...childProps} />
+    <TestLayoutBlock {...childProps} />
   )
 
   if (node.deltaBlock.type === "form") {
@@ -94,6 +94,72 @@ const BlockNodeRenderer = (props: BlockPropsWithWidth): ReactElement => {
         formId={formId}
         clearOnSubmit={clearOnSubmit}
         width={props.width}
+        hasSubmitButton={hasSubmitButton}
+        scriptRunState={props.scriptRunState}
+        widgetMgr={props.widgetMgr}
+      >
+        {child}
+      </Form>
+    )
+  }
+
+  if (node.deltaBlock.column) {
+    return (
+      <StyledColumn
+        weight={node.deltaBlock.column.weight ?? 0}
+        data-testid="column"
+      >
+        {child}
+      </StyledColumn>
+    )
+  }
+
+  return child
+}
+
+// Render BlockNodes (i.e. container nodes).
+const TestBlockNodeRenderer = (props: BlockPropsWithoutWidth): ReactElement => {
+  const { node } = props
+
+  // Allow columns to create the specified space regardless of empty state
+  if (node.isEmpty && !node.deltaBlock.column) {
+    return <></>
+  }
+
+  const enable = shouldComponentBeEnabled("", props.scriptRunState)
+  const isStale = isComponentStale(
+    enable,
+    node,
+    props.scriptRunState,
+    props.scriptRunId
+  )
+
+  const optionalProps = node.deltaBlock.expandable
+    ? {
+        empty: node.isEmpty,
+        isStale,
+        ...node.deltaBlock.expandable,
+      }
+    : {}
+
+  const childProps = { ...props, ...optionalProps, ...{ node } }
+
+  const child = node.deltaBlock.expandable ? (
+    <ExpandableLayoutBlock {...childProps} />
+  ) : (
+    <TestLayoutBlock {...childProps} />
+  )
+
+  if (node.deltaBlock.type === "form") {
+    const { formId, clearOnSubmit } = node.deltaBlock.form as BlockProto.Form
+    const submitButtonCount = props.formsData.submitButtonCount.get(formId)
+    const hasSubmitButton =
+      submitButtonCount !== undefined && submitButtonCount > 0
+    return (
+      <Form
+        formId={formId}
+        clearOnSubmit={clearOnSubmit}
+        width={"100%"}
         hasSubmitButton={hasSubmitButton}
         scriptRunState={props.scriptRunState}
         widgetMgr={props.widgetMgr}
@@ -139,7 +205,40 @@ const ChildRenderer = (props: BlockPropsWithWidth): ReactElement => {
             // guarantee it doesn't get overwritten by {...childProps}.
             const childProps = { ...props, ...{ node: node as BlockNode } }
 
-            return <BlockNodeRenderer key={index} {...childProps} />
+            return <TestBlockNodeRenderer key={index} {...childProps} />
+          }
+
+          // We don't have any other node types!
+          throw new Error(`Unrecognized AppNode: ${node}`)
+        }
+      )}
+    </>
+  )
+}
+
+const TestChildRenderer = (props: BlockPropsWithoutWidth): ReactElement => {
+  return (
+    <>
+      {props.node.children.map(
+        (node: AppNode, index: number): ReactElement => {
+          // Base case: render a leaf node.
+          if (node instanceof ElementNode) {
+            // Put node in childProps instead of passing as a node={node} prop in React to
+            // guarantee it doesn't get overwritten by {...childProps}.
+            const childProps = { ...props, ...{ node: node as ElementNode } }
+
+            const key = getElementWidgetID(node.element) || index
+            return <TestElementNodeRenderer key={key} {...childProps} />
+          }
+
+          // Recursive case: render a block, which can contain other blocks
+          // and elements.
+          if (node instanceof BlockNode) {
+            // Put node in childProps instead of passing as a node={node} prop in React to
+            // guarantee it doesn't get overwritten by {...childProps}.
+            const childProps = { ...props, ...{ node: node as BlockNode } }
+
+            return <TestBlockNodeRenderer key={index} {...childProps} />
           }
 
           // We don't have any other node types!
@@ -159,11 +258,11 @@ const VerticalBlock = (props: BlockPropsWithoutWidth): ReactElement => {
   return (
     <AutoSizer disableHeight={true} style={styledVerticalBlockWrapperStyles}>
       {({ width }) => {
-        const propsWithNewWidth = { ...props, ...{ width } }
+        const propsWithNewWidth = { ...props, ...{ width:160 } }
 
         return (
           <StyledVerticalBlock width={width} data-testid="stVerticalBlock">
-            <ChildRenderer {...propsWithNewWidth} />
+            <TestChildRenderer {...props} />
           </StyledVerticalBlock>
         )
       }}
@@ -177,7 +276,7 @@ const HorizontalBlock = (props: BlockPropsWithWidth): ReactElement => {
   // do the right thing, then we ask ChildRenderer to handle it.
   return (
     <StyledHorizontalBlock data-testid="stHorizontalBlock">
-      <ChildRenderer {...props} />
+      <TestChildRenderer {...props} />
     </StyledHorizontalBlock>
   )
 }
@@ -187,10 +286,10 @@ const TestHorizontalBlock = (props: BlockPropsWithoutWidth): ReactElement => {
   // The children are always columns, but this is not checked. We just trust the Python side to
   // do the right thing, then we ask ChildRenderer to handle it.
   console.log(props)
-  const propsWithNewWidth = { ...props, width: 160}
+  const propsWithNewWidth = { ...props}
   return (
           <StyledHorizontalTestBlock data-testid="stHorizontalTestBlock">
-            <ChildRenderer {...propsWithNewWidth} />
+            <TestChildRenderer {...propsWithNewWidth} />
           </StyledHorizontalTestBlock>
   )
 }
@@ -205,6 +304,15 @@ function LayoutBlock(props: BlockPropsWithWidth): ReactElement {
   }
 
   return <VerticalBlock {...props} />
+}
+
+// A container block with one of two types of layouts: vertical and horizontal.
+function TestLayoutBlock(props: BlockPropsWithoutWidth): ReactElement {
+  if (props.node.deltaBlock.row) {
+    return <TestHorizontalBlock {...props} />
+  }
+
+  return <TestHorizontalBlock {...props} />
 }
 
 export default VerticalBlock

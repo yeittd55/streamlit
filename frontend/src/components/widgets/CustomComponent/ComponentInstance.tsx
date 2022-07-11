@@ -60,7 +60,7 @@ export interface Props {
 
   disabled: boolean
   element: ComponentInstanceProto
-  width: number
+  width: number | string
   theme: Theme
 }
 

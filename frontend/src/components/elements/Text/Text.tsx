@@ -20,7 +20,7 @@ import { Text as TextProto } from "src/autogen/proto"
 import { StyledText } from "./styled-components"
 
 export interface TextProps {
-  width: number
+  width: number | string
   element: TextProto
 }
 

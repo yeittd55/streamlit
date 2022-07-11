@@ -43,7 +43,7 @@ export interface Props {
   disabled: boolean
   element: NumberInputProto
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 export interface State {

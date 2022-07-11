@@ -125,7 +125,7 @@ export const styledVerticalBlockWrapperStyles: any = {
 
 export const styledHorizontalBlockWrapperStyles: any = {
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   flex: 1,
 }
 

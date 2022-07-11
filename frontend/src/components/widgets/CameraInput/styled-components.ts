@@ -11,7 +11,7 @@ export interface CameraInputButtonProps {
 }
 
 export interface StyledCameraInputProps {
-  width: number
+  width: number | string
 }
 
 enum Size {
@@ -56,14 +56,14 @@ export const StyledCameraInput = styled.div<StyledCameraInputProps>(
 )
 
 export interface StyledBoxProps {
-  width: number
+  width: number | string
 }
 
 export const StyledBox = styled.div<StyledBoxProps>(({ theme, width }) => ({
   backgroundColor: theme.colors.secondaryBg,
   borderRadius: `${theme.radii.md} ${theme.radii.md} 0 0`,
   width,
-  height: (width * 9) / 16,
+  height: width,
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",

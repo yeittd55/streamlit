@@ -24,7 +24,7 @@ import React, { CSSProperties, ReactElement } from "react"
 
 export interface IFrameProps {
   element: IFrameProto
-  width: number
+  width: number | string
 }
 
 export default function IFrame({

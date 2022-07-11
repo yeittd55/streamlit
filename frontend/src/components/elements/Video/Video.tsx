@@ -21,7 +21,7 @@ import { Video as VideoProto } from "src/autogen/proto"
 import { buildMediaUri } from "src/lib/UriUtil"
 
 export interface VideoProps {
-  width: number
+  width: number | string
   element: VideoProto
 }
 
@@ -61,11 +61,11 @@ export default function Video({ element, width }: VideoProps): ReactElement {
     return url
   }
 
-  /* Is this a YouTube link? If so we need a fancier tag.
+/* Is this a YouTube link? If so we need a fancier tag.
        NOTE: This part assumes the URL is already an "embed" link.
     */
   if (type === VideoProto.Type.YOUTUBE_IFRAME) {
-    const height = width * 0.75
+    const height = width
 
     return (
       <iframe

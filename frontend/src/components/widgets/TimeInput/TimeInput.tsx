@@ -31,7 +31,7 @@ export interface Props {
   disabled: boolean
   element: TimeInputProto
   widgetMgr: WidgetStateManager
-  width: number
+  width: number | string
 }
 
 interface State {

@@ -27,7 +27,7 @@ import {
 } from "./styled-components"
 
 export interface ExceptionElementProps {
-  width: number
+  width: number | string
   element: ExceptionProto
 }
 

@@ -56,7 +56,7 @@ export interface Props {
   widgetMgr: WidgetStateManager
   uploadClient: FileUploadClient
   disabled: boolean
-  width: number
+  width: number | string
 }
 
 type FileUploaderStatus =
@@ -386,7 +386,7 @@ class CameraInput extends React.PureComponent<Props, State> {
                       : "100%"
                   }
                   width={width}
-                  height={(width * 9) / 16}
+                  height={width}
                 />
               )}
             </StyledBox>
@@ -407,7 +407,7 @@ class CameraInput extends React.PureComponent<Props, State> {
         ) : (
           <WebcamComponent
             handleCapture={this.handleCapture}
-            width={width}
+            width={704}
             disabled={disabled}
             clearPhotoInProgress={this.state.clearPhotoInProgress}
             setClearPhotoInProgress={this.setClearPhotoInProgress}
