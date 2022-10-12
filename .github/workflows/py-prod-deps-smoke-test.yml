@@ -18,9 +18,9 @@ jobs:
     name: Python Prod Deps Smoke Test
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash -ileo pipefail {0}
+    # defaults:
+    #   run:
+    #     shell: bash -ileo pipefail {0}
 
     steps:
       - name: Checkout Streamlit code

@@ -18,9 +18,9 @@ jobs:
     name: Cypress Tests
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash -ileo pipefail {0}
+    # defaults:
+    #   run:
+    #     shell: bash -ileo pipefail {0}
 
     strategy:
       fail-fast: false

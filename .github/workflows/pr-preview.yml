@@ -17,9 +17,9 @@ jobs:
   upload-whl:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash -ileo pipefail {0}
+    # defaults:
+    #   run:
+    #     shell: bash -ileo pipefail {0}
 
     outputs:
       enable-setup: ${{ steps.exports.outputs.enable-setup || 'false' }}
@@ -94,9 +94,9 @@ jobs:
     needs: upload-whl
     if: needs.upload-whl.outputs.enable-setup == 'true'
 
-    defaults:
-      run:
-        shell: bash -ileo pipefail {0}
+    # defaults:
+    #   run:
+    #     shell: bash -ileo pipefail {0}
     
     steps:
       - name: Checkout Core Previews Repo
