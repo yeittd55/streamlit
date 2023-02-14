@@ -37,5 +37,7 @@ message ArrowVegaLiteChart {
   // override the properties with a theme. Currently, only "streamlit" or None are accepted.
   string theme = 6;
 
+  string set_encode_options = 7;
+
   reserved 3;
 }

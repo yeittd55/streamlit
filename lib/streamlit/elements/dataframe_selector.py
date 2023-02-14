@@ -425,6 +425,7 @@ class DataFrameSelectorMixin:
         altair_chart: "Chart",
         use_container_width: bool = False,
         theme: Union[None, Literal["streamlit"]] = "streamlit",
+        set_encode_options={},
     ) -> "DeltaGenerator":
         """Display a chart using the Altair library.
 
@@ -468,7 +469,7 @@ class DataFrameSelectorMixin:
         """
 
         if _use_arrow():
-            return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+            return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme, set_encode_options)
         else:
             return self.dg._legacy_altair_chart(altair_chart, use_container_width)
 

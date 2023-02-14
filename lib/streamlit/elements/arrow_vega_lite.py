@@ -122,6 +122,7 @@ def marshall(
     spec: Optional[Dict[str, Any]] = None,
     use_container_width: bool = False,
     theme: Union[None, Literal["streamlit"]] = "streamlit",
+    set_encode_options={},
     **kwargs,
 ):
     """Construct a Vega-Lite chart object.
@@ -185,6 +186,7 @@ def marshall(
     proto.spec = json.dumps(spec)
     proto.use_container_width = use_container_width
     proto.theme = theme or ""
+    proto.set_encode_options = json.dumps(set_encode_options)
 
     if data is not None:
         arrow.marshall(proto.data, data)

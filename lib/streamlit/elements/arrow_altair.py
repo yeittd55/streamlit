@@ -293,6 +293,7 @@ class ArrowAltairMixin:
         altair_chart: Chart,
         use_container_width: bool = False,
         theme: Union[None, Literal["streamlit"]] = "streamlit",
+        set_encode_options={},
     ) -> "DeltaGenerator":
         """Display a chart using the Altair library.
 
@@ -339,6 +340,7 @@ class ArrowAltairMixin:
             altair_chart,
             use_container_width=use_container_width,
             theme=theme,
+            set_encode_options,
         )
 
         return self.dg._enqueue("arrow_vega_lite_chart", proto)
@@ -587,6 +589,7 @@ def marshall(
     altair_chart: Chart,
     use_container_width: bool = False,
     theme: Union[None, Literal["streamlit"]] = "streamlit",
+    set_encode_options={},
     **kwargs: Any,
 ) -> None:
     """Marshall chart's data into proto."""
@@ -620,5 +623,6 @@ def marshall(
             chart_dict,
             use_container_width=use_container_width,
             theme=theme,
+            set_encode_options=set_encode_options,
             **kwargs,
         )
