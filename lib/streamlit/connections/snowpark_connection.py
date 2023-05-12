@@ -26,13 +26,12 @@ from contextlib import contextmanager
 from datetime import timedelta
 from typing import TYPE_CHECKING, Any, Dict, Iterator, Optional, Union, cast
 
-import pandas as pd
-
 from streamlit.connections import ExperimentalBaseConnection
 from streamlit.errors import StreamlitAPIException
 from streamlit.runtime.caching import cache_data
 
 if TYPE_CHECKING:
+    import pandas as pd
     from snowflake.snowpark.session import Session  # type: ignore
 
 
@@ -124,7 +123,7 @@ class SnowparkConnection(ExperimentalBaseConnection["Session"]):
         self,
         sql: str,
         ttl: Optional[Union[float, int, timedelta]] = None,
-    ) -> pd.DataFrame:
+    ) -> "pd.DataFrame":
         """Run a read-only SQL query.
 
         This method implements both query result caching (with caching behavior
@@ -175,7 +174,7 @@ class SnowparkConnection(ExperimentalBaseConnection["Session"]):
             show_spinner="Running `snowpark.query(...)`.",
             ttl=ttl,
         )
-        def _query(sql: str) -> pd.DataFrame:
+        def _query(sql: str) -> "pd.DataFrame":
             with self._lock:
                 return self._instance.sql(sql).to_pandas()
 

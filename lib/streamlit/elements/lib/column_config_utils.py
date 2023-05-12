@@ -16,10 +16,8 @@ from __future__ import annotations
 
 import json
 from enum import Enum
-from typing import Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Dict, List, Optional, Union
 
-import pandas as pd
-import pyarrow as pa
 from typing_extensions import Final, Literal, TypeAlias
 
 from streamlit.elements.lib.column_types import ColumnConfig, ColumnType
@@ -27,6 +25,10 @@ from streamlit.elements.lib.dicttools import remove_none_values
 from streamlit.errors import StreamlitAPIException
 from streamlit.proto.Arrow_pb2 import Arrow as ArrowProto
 from streamlit.type_util import DataFormat, is_colum_type_arrow_incompatible
+
+if TYPE_CHECKING:
+    import pandas as pd
+    import pyarrow as pa
 
 # The index identifier can be used to apply configuration options
 IndexIdentifierType = Literal["_index"]
@@ -126,7 +128,7 @@ def is_type_compatible(column_type: ColumnType, data_kind: ColumnDataKind) -> bo
     return data_kind in _EDITING_COMPATIBILITY_MAPPING[column_type]
 
 
-def _determine_data_kind_via_arrow(field: pa.Field) -> ColumnDataKind:
+def _determine_data_kind_via_arrow(field: "pa.Field") -> ColumnDataKind:
     """Determine the data kind via the arrow type information.
 
     The column data kind refers to the shared data type of the values
@@ -143,6 +145,8 @@ def _determine_data_kind_via_arrow(field: pa.Field) -> ColumnDataKind:
     ColumnDataKind
         The data kind of the field.
     """
+    import pyarrow as pa
+
     field_type = field.type
     if pa.types.is_integer(field_type):
         return ColumnDataKind.INTEGER
@@ -191,7 +195,7 @@ def _determine_data_kind_via_arrow(field: pa.Field) -> ColumnDataKind:
 
 
 def _determine_data_kind_via_pandas_dtype(
-    column: pd.Series | pd.Index,
+    column: "pd.Series" | "pd.Index",
 ) -> ColumnDataKind:
     """Determine the data kind by using the pandas dtype.
 
@@ -208,6 +212,8 @@ def _determine_data_kind_via_pandas_dtype(
     ColumnDataKind
         The data kind of the column.
     """
+    import pandas as pd
+
     column_dtype = column.dtype
     if pd.api.types.is_bool_dtype(column_dtype):
         return ColumnDataKind.BOOLEAN
@@ -243,7 +249,7 @@ def _determine_data_kind_via_pandas_dtype(
 
 
 def _determine_data_kind_via_inferred_type(
-    column: pd.Series | pd.Index,
+    column: "pd.Series" | "pd.Index",
 ) -> ColumnDataKind:
     """Determine the data kind by inferring it from the underlying data.
 
@@ -260,6 +266,7 @@ def _determine_data_kind_via_inferred_type(
     ColumnDataKind
         The data kind of the column.
     """
+    import pandas as pd
 
     inferred_type = pd.api.types.infer_dtype(column)
 
@@ -310,7 +317,7 @@ def _determine_data_kind_via_inferred_type(
 
 
 def _determine_data_kind(
-    column: pd.Series | pd.Index, field: Optional[pa.Field] = None
+    column: "pd.Series" | "pd.Index", field: Optional["pa.Field"] = None
 ) -> ColumnDataKind:
     """Determine the data kind of a column.
 
@@ -329,6 +336,7 @@ def _determine_data_kind(
     ColumnDataKind
         The data kind of the column.
     """
+    import pandas as pd
 
     if pd.api.types.is_categorical_dtype(column.dtype):
         # Categorical columns can have different underlying data kinds
@@ -347,7 +355,7 @@ def _determine_data_kind(
 
 
 def determine_dataframe_schema(
-    data_df: pd.DataFrame, arrow_schema: pa.Schema
+    data_df: "pd.DataFrame", arrow_schema: "pa.Schema"
 ) -> DataframeSchema:
     """Determine the schema of a dataframe.
 
@@ -450,7 +458,7 @@ def update_column_config(
 
 def apply_data_specific_configs(
     columns_config: ColumnConfigMapping,
-    data_df: pd.DataFrame,
+    data_df: "pd.DataFrame",
     data_format: DataFormat,
     check_arrow_compatibility: bool = False,
 ) -> None:

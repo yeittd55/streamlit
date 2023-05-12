@@ -17,6 +17,7 @@ import unittest
 from copy import deepcopy
 from unittest.mock import MagicMock, PropertyMock, patch
 
+import pandas as pd
 import pytest
 from parameterized import parameterized
 from sqlalchemy.exc import DatabaseError, InternalError, OperationalError
@@ -129,7 +130,7 @@ class SQLConnectionTest(unittest.TestCase):
         assert kwargs == {"foo": "bar", "baz": "qux"}
 
     @patch("streamlit.connections.sql_connection.SQLConnection._connect", MagicMock())
-    @patch("streamlit.connections.sql_connection.pd.read_sql")
+    @patch("streamlit.connections.sql_connection.read_sql")
     def test_query_caches_value(self, patched_read_sql):
         # Caching functions rely on an active script run ctx
         add_script_run_ctx(threading.current_thread(), create_mock_script_run_ctx())
@@ -174,7 +175,7 @@ class SQLConnectionTest(unittest.TestCase):
 
     @parameterized.expand([(DatabaseError,), (InternalError,), (OperationalError,)])
     @patch("streamlit.connections.sql_connection.SQLConnection._connect", MagicMock())
-    @patch("streamlit.connections.sql_connection.pd.read_sql")
+    @patch("streamlit.connections.sql_connection.read_sql")
     def test_retry_behavior(self, error_class, patched_read_sql):
         patched_read_sql.side_effect = error_class("kaboom", params=None, orig=None)
 
@@ -195,7 +196,7 @@ class SQLConnectionTest(unittest.TestCase):
         conn._connect.reset_mock()
 
     @patch("streamlit.connections.sql_connection.SQLConnection._connect", MagicMock())
-    @patch("streamlit.connections.sql_connection.pd.read_sql")
+    @patch("streamlit.connections.sql_connection.read_sql")
     def test_retry_behavior_fails_fast_for_most_errors(self, patched_read_sql):
         patched_read_sql.side_effect = Exception("kaboom")
 

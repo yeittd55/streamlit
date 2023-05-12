@@ -15,8 +15,6 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Union, cast
-
-import pyarrow as pa
 from typing_extensions import TypeAlias
 
 from streamlit import type_util
@@ -35,6 +33,9 @@ from streamlit.runtime.metrics_util import gather_metrics
 if TYPE_CHECKING:
     from numpy import ndarray
     from pandas import DataFrame, Index, Series
+    import pyarrow as pa
+    from numpy import ndarray
+    from pandas import DataFrame
     from pandas.io.formats.style import Styler
 
     from streamlit.delta_generator import DeltaGenerator
@@ -44,7 +45,7 @@ Data: TypeAlias = Union[
     "Series",
     "Styler",
     "Index",
-    pa.Table,
+    "pa.Table",
     "ndarray",
     Iterable,
     Dict[str, List[Any]],
@@ -142,6 +143,7 @@ class ArrowMixin:
         >>> st._arrow_dataframe(df.style.highlight_max(axis=0))
 
         """
+        import pyarrow as pa
 
         # Convert the user provided column config into the frontend compatible format:
         column_config_mapping = process_config_mapping(column_config)
@@ -268,6 +270,8 @@ def marshall(proto: ArrowProto, data: Data, default_uuid: Optional[str] = None) 
             default_uuid, str
         ), "Default UUID must be a string for Styler data."
         marshall_styler(proto, data, default_uuid)
+
+    import pyarrow as pa
 
     if isinstance(data, pa.Table):
         proto.data = type_util.pyarrow_table_to_bytes(data)

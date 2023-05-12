@@ -112,6 +112,8 @@ def _send_email(email: str) -> None:
     if email is None or "@" not in email:
         return
 
+    import requests
+
     headers = {
         "authority": "api.segment.io",
         "accept": "*/*",
@@ -245,6 +247,8 @@ class Credentials(object):
 
         if self.activation is None:
             return
+
+        from requests.exceptions import RequestException
 
         # Create intermediate directories if necessary
         os.makedirs(os.path.dirname(self._conf_file), exist_ok=True)

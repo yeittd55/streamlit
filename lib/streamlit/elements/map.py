@@ -18,7 +18,6 @@ import copy
 import json
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Optional, Union, cast
 
-import pandas as pd
 from typing_extensions import Final, TypeAlias
 
 import streamlit.elements.deck_gl_json_chart as deck_gl_json_chart
@@ -28,13 +27,14 @@ from streamlit.proto.DeckGlJsonChart_pb2 import DeckGlJsonChart as DeckGlJsonCha
 from streamlit.runtime.metrics_util import gather_metrics
 
 if TYPE_CHECKING:
+    import pandas as pd
     from pandas.io.formats.style import Styler
 
     from streamlit.delta_generator import DeltaGenerator
 
 
 Data: TypeAlias = Union[
-    pd.DataFrame,
+    "pd.DataFrame",
     "Styler",
     Iterable[Any],
     Dict[Any, Any],

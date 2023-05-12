@@ -18,7 +18,6 @@ import json as json
 import types
 from typing import TYPE_CHECKING, Any, List, Tuple, Type, cast
 
-import numpy as np
 from typing_extensions import Final
 
 from streamlit import type_util
@@ -196,7 +195,11 @@ class WriteMixin:
                 flush_buffer()
                 self.dg.dataframe(arg)
             elif type_util.is_dataframe_like(arg):
+                import numpy as np
+
                 flush_buffer()
+                import numpy as np
+
                 if len(np.shape(arg)) > 2:
                     self.dg.text(arg)
                 else:

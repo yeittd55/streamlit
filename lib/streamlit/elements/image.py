@@ -27,8 +27,6 @@ from enum import IntEnum
 from typing import TYPE_CHECKING, List, Optional, Sequence, Union, cast
 from urllib.parse import urlparse
 
-import numpy as np
-from PIL import GifImagePlugin, Image, ImageFile
 from typing_extensions import Final, Literal, TypeAlias
 
 from streamlit import runtime
@@ -42,6 +40,7 @@ if TYPE_CHECKING:
     from typing import Any
 
     import numpy.typing as npt
+    from PIL import GifImagePlugin, Image, ImageFile
 
     from streamlit.delta_generator import DeltaGenerator
 
@@ -54,7 +53,7 @@ LOGGER: Final = get_logger(__name__)
 MAXIMUM_CONTENT_WIDTH: Final[int] = 2 * 730
 
 PILImage: TypeAlias = Union[
-    ImageFile.ImageFile, Image.Image, GifImagePlugin.GifImageFile
+    "ImageFile.ImageFile", "Image.Image", "GifImagePlugin.GifImageFile"
 ]
 AtomicImage: TypeAlias = Union[PILImage, "npt.NDArray[Any]", io.BytesIO, str]
 ImageOrImageList: TypeAlias = Union[AtomicImage, List[AtomicImage]]
@@ -205,6 +204,8 @@ def _validate_image_format_string(
     - For all other strings, return "PNG" if the image has an alpha channel,
     "GIF" if the image is a GIF, and "JPEG" otherwise.
     """
+    from PIL import Image
+
     format = format.upper()
     if format == "JPEG" or format == "PNG":
         return cast(ImageFormat, format)
@@ -250,6 +251,9 @@ def _BytesIO_to_bytes(data: io.BytesIO) -> bytes:
 
 
 def _np_array_to_bytes(array: "npt.NDArray[Any]", output_format="JPEG") -> bytes:
+    import numpy as np
+    from PIL import Image
+
     img = Image.fromarray(array.astype(np.uint8))
     format = _validate_image_format_string(img, output_format)
 
@@ -288,6 +292,8 @@ def _ensure_image_size_and_format(
     MAXIMUM_CONTENT_WIDTH. Ensure the image's format corresponds to the given
     ImageFormat. Return the (possibly resized and reformatted) image bytes.
     """
+    from PIL import Image
+
     image = Image.open(io.BytesIO(image_data))
     actual_width, actual_height = image.size
 
@@ -310,6 +316,8 @@ def _ensure_image_size_and_format(
 
 
 def _clip_image(image: "npt.NDArray[Any]", clamp: bool) -> "npt.NDArray[Any]":
+    import numpy as np
+
     data = image
     if issubclass(image.dtype.type, np.floating):
         if clamp:
@@ -342,6 +350,8 @@ def image_to_url(
     (When running in "raw" mode, we won't actually load data into the
     MediaFileManager, and we'll return an empty URL.)
     """
+    import numpy as np
+    from PIL import Image, ImageFile
 
     image_data: bytes
 
@@ -474,6 +484,8 @@ def marshall_images(
         Defaults to 'auto' which identifies the compression type based
         on the type and format of the image argument.
     """
+    import numpy as np
+
     channels = cast(Channels, channels.upper())
 
     # Turn single image and caption into one element list.

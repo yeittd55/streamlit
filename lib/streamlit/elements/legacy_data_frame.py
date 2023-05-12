@@ -18,9 +18,7 @@ import datetime
 import re
 from typing import TYPE_CHECKING, Any, Dict, NamedTuple, Optional, cast
 
-import pyarrow as pa
 import tzlocal
-from pandas import DataFrame
 from typing_extensions import Final
 
 from streamlit import errors, type_util
@@ -31,6 +29,7 @@ from streamlit.proto.DataFrame_pb2 import TableStyle as TableStyleProto
 from streamlit.runtime.metrics_util import gather_metrics
 
 if TYPE_CHECKING:
+    from pandas import DataFrame
     from pandas.io.formats.style import Styler
 
     from streamlit.delta_generator import DeltaGenerator
@@ -168,6 +167,8 @@ def marshall_data_frame(data: Data, proto_df: DataFrameProto) -> None:
     proto_df : proto.DataFrame
         Output. The protobuf for a Streamlit DataFrame proto.
     """
+    import pyarrow as pa
+
     if isinstance(data, pa.Table):
         raise errors.StreamlitAPIException(
             """
@@ -191,7 +192,9 @@ To be able to use pyarrow tables, please enable pyarrow by changing the config s
 
 
 def _marshall_styles(
-    proto_table_style: TableStyleProto, df: DataFrame, styler: Optional["Styler"] = None
+    proto_table_style: TableStyleProto,
+    df: "DataFrame",
+    styler: Optional["Styler"] = None,
 ) -> None:
     """Adds pandas.Styler styling data to a proto.DataFrame
 

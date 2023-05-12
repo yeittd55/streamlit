@@ -40,7 +40,6 @@ from typing import (
 )
 
 from cachetools import TTLCache
-from pympler.asizeof import asizeof
 
 import streamlit as st
 from streamlit import config, file_util, util
@@ -224,6 +223,8 @@ class _MemCaches(CacheStatsProvider):
             # Shallow-clone our caches. We don't want to hold the global
             # lock during stats-gathering.
             function_caches = self._function_caches.copy()
+
+        from pympler.asizeof import asizeof
 
         stats = [
             CacheStat("st_cache", cache.display_name, asizeof(c))

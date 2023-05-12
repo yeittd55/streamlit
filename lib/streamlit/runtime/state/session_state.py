@@ -28,7 +28,6 @@ from typing import (
     cast,
 )
 
-from pympler.asizeof import asizeof
 from typing_extensions import Final, TypeAlias
 
 import streamlit as st
@@ -619,6 +618,8 @@ class SessionState:
             return True
 
     def get_stats(self) -> list[CacheStat]:
+        from pympler.asizeof import asizeof
+
         stat = CacheStat("st_session_state", "", asizeof(self))
         return [stat]
 

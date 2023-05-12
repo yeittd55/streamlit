@@ -23,7 +23,6 @@ from datetime import timedelta
 from typing import Any, Callable, TypeVar, cast, overload
 
 from cachetools import TTLCache
-from pympler import asizeof
 from typing_extensions import TypeAlias
 
 import streamlit as st
@@ -562,6 +561,8 @@ class ResourceCache(Cache):
         # the lock.
         with self._mem_cache_lock:
             cache_entries = list(self._mem_cache.values())
+
+        from pympler import asizeof
 
         return [
             CacheStat(

@@ -187,3 +187,5 @@ pio.templates["streamlit"] = go.layout.Template(
         coloraxis=go.layout.Coloraxis(colorscale=streamlit_colorscale),
     ),
 )
+
+pio.templates.default = "streamlit"

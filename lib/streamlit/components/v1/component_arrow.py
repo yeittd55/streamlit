@@ -16,8 +16,11 @@
 CustomComponent for dataframe serialization.
 """
 
-import pandas as pd
-import pyarrow as pa
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import pandas as pd
+    import pyarrow as pa
 
 from streamlit import type_util, util
 
@@ -289,6 +292,8 @@ def _dataframe_to_pybytes(df):
         A dataframe to convert.
 
     """
+    import pyarrow as pa
+
     table = pa.Table.from_pandas(df)
     sink = pa.BufferOutputStream()
     writer = pa.RecordBatchStreamWriter(sink, table.schema)
@@ -310,6 +315,8 @@ def _marshall_index(proto, index):
         Will default to RangeIndex (0, 1, 2, ..., n) if no index is provided.
 
     """
+    import pandas as pd
+
     index = map(util._maybe_tuple_to_list, index.values)
     index_df = pd.DataFrame(index)
     proto.index = _dataframe_to_pybytes(index_df)
@@ -328,6 +335,8 @@ def _marshall_columns(proto, columns):
         Will default to RangeIndex (0, 1, 2, ..., n) if no column labels are provided.
 
     """
+    import pandas as pd
+
     columns = map(util._maybe_tuple_to_list, columns.values)
     columns_df = pd.DataFrame(columns)
     proto.columns = _dataframe_to_pybytes(columns_df)
@@ -345,6 +354,8 @@ def _marshall_data(proto, data):
         A dataframe to marshall.
 
     """
+    import pandas as pd
+
     df = pd.DataFrame(data)
     proto.data = _dataframe_to_pybytes(df)
 
@@ -358,6 +369,8 @@ def arrow_proto_to_dataframe(proto):
         Output. pandas.DataFrame
 
     """
+    import pandas as pd
+
     data = _pybytes_to_dataframe(proto.data)
     index = _pybytes_to_dataframe(proto.index)
     columns = _pybytes_to_dataframe(proto.columns)
@@ -376,5 +389,7 @@ def _pybytes_to_dataframe(source):
         Will default to RangeIndex (0, 1, 2, ..., n) if no `index` or `columns` are provided.
 
     """
+    import pyarrow as pa
+
     reader = pa.RecordBatchStreamReader(source)
     return reader.read_pandas()

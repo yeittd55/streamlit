@@ -32,8 +32,6 @@ from typing import (
     overload,
 )
 
-import pandas as pd
-import pyarrow as pa
 from typing_extensions import Literal, TypeAlias, TypedDict
 
 from streamlit import logger as _logger
@@ -69,6 +67,8 @@ from streamlit.type_util import DataFormat, DataFrameGenericAlias, Key, is_type,
 
 if TYPE_CHECKING:
     import numpy as np
+    import pandas as pd
+    import pyarrow as pa
     from pandas.io.formats.style import Styler
 
     from streamlit.delta_generator import DeltaGenerator
@@ -96,11 +96,11 @@ EditableData = TypeVar(
 
 # All data types supported by the data editor.
 DataTypes: TypeAlias = Union[
-    pd.DataFrame,
-    pd.Series,
-    pd.Index,
+    "pd.DataFrame",
+    "pd.Index",
+    "pd.Series",
     "Styler",
-    pa.Table,
+    "pa.Table",
     "np.ndarray[Any, np.dtype[np.float64]]",
     Tuple[Any],
     List[Any],
@@ -185,6 +185,8 @@ def _parse_value(
     -------
     The converted value.
     """
+    import pandas as pd
+
     if value is None:
         return None
 
@@ -229,7 +231,7 @@ def _parse_value(
 
 
 def _apply_cell_edits(
-    df: pd.DataFrame,
+    df: "pd.DataFrame",
     edited_rows: Mapping[int, Mapping[str, str | int | float | bool | None]],
     dataframe_schema: DataframeSchema,
 ) -> None:
@@ -264,7 +266,7 @@ def _apply_cell_edits(
 
 
 def _apply_row_additions(
-    df: pd.DataFrame,
+    df: "pd.DataFrame",
     added_rows: List[Dict[str, Any]],
     dataframe_schema: DataframeSchema,
 ) -> None:
@@ -284,6 +286,8 @@ def _apply_row_additions(
     """
     if not added_rows:
         return
+
+    import pandas as pd
 
     # This is only used if the dataframe has a range index:
     # There seems to be a bug in older pandas versions with RangeIndex in
@@ -320,7 +324,7 @@ def _apply_row_additions(
             df.loc[index_value, :] = new_row
 
 
-def _apply_row_deletions(df: pd.DataFrame, deleted_rows: List[int]) -> None:
+def _apply_row_deletions(df: "pd.DataFrame", deleted_rows: List[int]) -> None:
     """Apply row deletions to the provided dataframe (inplace).
 
     Parameters
@@ -336,7 +340,7 @@ def _apply_row_deletions(df: pd.DataFrame, deleted_rows: List[int]) -> None:
 
 
 def _apply_dataframe_edits(
-    df: pd.DataFrame,
+    df: "pd.DataFrame",
     data_editor_state: EditingState,
     dataframe_schema: DataframeSchema,
 ) -> None:
@@ -365,7 +369,7 @@ def _apply_dataframe_edits(
         _apply_row_deletions(df, data_editor_state["deleted_rows"])
 
 
-def _is_supported_index(df_index: pd.Index) -> bool:
+def _is_supported_index(df_index: "pd.Index") -> bool:
     """Check if the index is supported by the data editor component.
 
     Parameters
@@ -380,6 +384,7 @@ def _is_supported_index(df_index: pd.Index) -> bool:
     bool
         True if the index is supported, False otherwise.
     """
+    import pandas as pd
 
     return (
         type(df_index)
@@ -422,7 +427,7 @@ def _check_column_names(data_df: pd.DataFrame):
 
 
 def _check_type_compatibilities(
-    data_df: pd.DataFrame,
+    data_df: "pd.DataFrame",
     columns_config: ColumnConfigMapping,
     dataframe_schema: DataframeSchema,
 ):
@@ -521,7 +526,7 @@ class DataEditorMixin:
         on_change: WidgetCallback | None = None,
         args: WidgetArgs | None = None,
         kwargs: WidgetKwargs | None = None,
-    ) -> pd.DataFrame:
+    ) -> "pd.DataFrame":
         pass
 
     @gather_metrics("data_editor")
@@ -720,6 +725,8 @@ class DataEditorMixin:
            height: 350px
 
         """
+        import pandas as pd
+        import pyarrow as pa
 
         key = to_key(key)
         check_callback_rules(self.dg, on_change)

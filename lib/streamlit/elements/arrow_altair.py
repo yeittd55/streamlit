@@ -33,8 +33,6 @@ from typing import (
     cast,
 )
 
-import pandas as pd
-from pandas.api.types import infer_dtype, is_integer_dtype
 from typing_extensions import Literal
 
 import streamlit.elements.arrow_vega_lite as arrow_vega_lite
@@ -48,6 +46,7 @@ from streamlit.proto.ArrowVegaLiteChart_pb2 import (
 from streamlit.runtime.metrics_util import gather_metrics
 
 if TYPE_CHECKING:
+    import pandas as pd
     from altair import Chart
 
     from streamlit.delta_generator import DeltaGenerator
@@ -283,7 +282,7 @@ class ArrowAltairMixin:
     @gather_metrics("_arrow_altair_chart")
     def _arrow_altair_chart(
         self,
-        altair_chart: Chart,
+        altair_chart: "Chart",
         use_container_width: bool = False,
         theme: Union[None, Literal["streamlit"]] = "streamlit",
     ) -> DeltaGenerator:
@@ -342,7 +341,7 @@ class ArrowAltairMixin:
         return cast("DeltaGenerator", self)
 
 
-def _is_date_column(df: pd.DataFrame, name: str) -> bool:
+def _is_date_column(df: "pd.DataFrame", name: str) -> bool:
     """True if the column with the given name stores datetime.date values.
 
     This function just checks the first value in the given column, so
@@ -367,13 +366,16 @@ def _is_date_column(df: pd.DataFrame, name: str) -> bool:
 
 
 def _melt_data(
-    data_df: pd.DataFrame,
+    data_df: "pd.DataFrame",
     x_column: str,
     y_column: str,
     color_column: str,
     value_columns: Optional[List[str]] = None,
-) -> pd.DataFrame:
+) -> "pd.DataFrame":
     """Converts a wide-format dataframe to a long-format dataframe."""
+
+    import pandas as pd
+    from pandas.api.types import infer_dtype
 
     data_df = pd.melt(
         data_df,
@@ -403,10 +405,10 @@ def _melt_data(
 
 
 def _maybe_melt(
-    data_df: pd.DataFrame,
+    data_df: "pd.DataFrame",
     x: Union[str, None] = None,
     y: Union[str, Sequence[str], None] = None,
-) -> Tuple[pd.DataFrame, str, str, str, str, Optional[str], Optional[str]]:
+) -> Tuple["pd.DataFrame", str, str, str, str, Optional[str], Optional[str]]:
     """Determines based on the selected x & y parameter, if the data needs to
     be converted to a long-format dataframe. If so, it returns the melted dataframe
     and the x, y, and color columns used for rendering the chart.
@@ -491,9 +493,10 @@ def _generate_chart(
     y: Union[str, Sequence[str], None] = None,
     width: int = 0,
     height: int = 0,
-) -> Chart:
+) -> "Chart":
     """Function to use the chart's type, data columns and indices to figure out the chart's spec."""
     import altair as alt
+    import pandas as pd
 
     if data is None:
         # Use an empty-ish dict because if we use None the x axis labels rotate
@@ -527,6 +530,8 @@ def _generate_chart(
     # https://github.com/streamlit/streamlit/pull/2097#issuecomment-714802475
     if chart_type == ChartType.BAR and not _is_date_column(data, x_column):
         x_type = "ordinal"
+
+    from pandas.api.types import is_integer_dtype
 
     # Use a max tick size of 1 for integer columns (prevents zoom into float numbers)
     # and deactivate grid lines for x-axis
@@ -578,7 +583,7 @@ def _generate_chart(
 
 def marshall(
     vega_lite_chart: ArrowVegaLiteChartProto,
-    altair_chart: Chart,
+    altair_chart: "Chart",
     use_container_width: bool = False,
     theme: Union[None, Literal["streamlit"]] = "streamlit",
     **kwargs: Any,

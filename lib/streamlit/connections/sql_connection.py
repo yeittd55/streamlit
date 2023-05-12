@@ -17,14 +17,13 @@ from copy import deepcopy
 from datetime import timedelta
 from typing import TYPE_CHECKING, List, Optional, Union, cast
 
-import pandas as pd
-
 from streamlit.connections import ExperimentalBaseConnection
 from streamlit.connections.util import extract_from_dict
 from streamlit.errors import StreamlitAPIException
 from streamlit.runtime.caching import cache_data
 
 if TYPE_CHECKING:
+    import pandas as pd
     from sqlalchemy.engine.base import Engine
     from sqlalchemy.orm import Session
 
@@ -40,6 +39,19 @@ _ALL_CONNECTION_PARAMS = {
     "database",
 }
 _REQUIRED_CONNECTION_PARAMS = {"dialect", "username", "host"}
+
+
+def read_sql(sql, instance, index_col, chunksize, params, **kwargs):
+    import pandas as pd
+
+    return pd.read_sql(
+        sql,
+        instance,
+        index_col=index_col,
+        chunksize=chunksize,
+        params=params,
+        **kwargs,
+    )
 
 
 class SQLConnection(ExperimentalBaseConnection["Engine"]):
@@ -127,7 +139,7 @@ class SQLConnection(ExperimentalBaseConnection["Engine"]):
         chunksize: Optional[int] = None,
         params=None,
         **kwargs,
-    ) -> pd.DataFrame:
+    ) -> "pd.DataFrame":
         """Run a read-only query.
 
         This method implements both query result caching (with caching behavior
@@ -204,9 +216,9 @@ class SQLConnection(ExperimentalBaseConnection["Engine"]):
             chunksize=None,
             params=None,
             **kwargs,
-        ) -> pd.DataFrame:
+        ) -> "pd.DataFrame":
             instance = self._instance.connect()
-            return pd.read_sql(
+            return read_sql(
                 text(sql),
                 instance,
                 index_col=index_col,

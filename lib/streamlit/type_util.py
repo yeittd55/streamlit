@@ -37,10 +37,6 @@ from typing import (
     overload,
 )
 
-import numpy as np
-import pyarrow as pa
-from pandas import DataFrame, Index, MultiIndex, Series
-from pandas.api.types import infer_dtype, is_dict_like, is_list_like
 from typing_extensions import Final, Literal, Protocol, TypeAlias, TypeGuard, get_args
 
 import streamlit as st
@@ -50,7 +46,10 @@ from streamlit import string_util
 
 if TYPE_CHECKING:
     import graphviz
+    import numpy as np
+    import pyarrow as pa
     import sympy
+    from pandas import DataFrame, Index, Series
     from pandas.core.indexing import _iLocIndexer
     from pandas.io.formats.style import Styler
     from plotly.graph_objs import Figure
@@ -268,7 +267,7 @@ class DataFormat(Enum):
     KEY_VALUE_DICT = auto()  # {index: value}
 
 
-def is_dataframe(obj: object) -> TypeGuard[DataFrame]:
+def is_dataframe(obj: object) -> TypeGuard["DataFrame"]:
     return is_type(obj, _PANDAS_DF_TYPE_STR)
 
 
@@ -375,6 +374,8 @@ def is_list_of_scalars(data: Iterable[Any]) -> bool:
     """Check if the list only contains scalar values."""
     # Overview on all value that are interpreted as scalar:
     # https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_scalar.html
+    from pandas.api.types import infer_dtype
+
     return infer_dtype(data, skipna=True) not in ["mixed", "unknown-array"]
 
 
@@ -484,7 +485,7 @@ def convert_anything_to_df(
     data: Any,
     max_unevaluated_rows: int = MAX_UNEVALUATED_DF_ROWS,
     ensure_copy: bool = False,
-) -> DataFrame:
+) -> "DataFrame":
     """Try to convert different formats to a Pandas Dataframe.
 
     Parameters
@@ -563,11 +564,11 @@ def ensure_iterable(obj: Iterable[V_co]) -> Iterable[V_co]:
 
 
 @overload
-def ensure_iterable(obj: DataFrame) -> Iterable[Any]:
+def ensure_iterable(obj: "DataFrame") -> Iterable[Any]:
     ...
 
 
-def ensure_iterable(obj: Union[DataFrame, Iterable[V_co]]) -> Iterable[Any]:
+def ensure_iterable(obj: Union["DataFrame", Iterable[V_co]]) -> Iterable[Any]:
     """Try to convert different formats to something iterable. Most inputs
     are assumed to be iterable, but if we have a DataFrame, we can just
     select the first column to iterate over. If the input is not iterable,
@@ -632,7 +633,7 @@ def is_pandas_version_less_than(v: str) -> bool:
     return version.parse(pd.__version__) < version.parse(v)
 
 
-def pyarrow_table_to_bytes(table: pa.Table) -> bytes:
+def pyarrow_table_to_bytes(table: "pa.Table") -> bytes:
     """Serialize pyarrow.Table to bytes using Apache Arrow.
 
     Parameters
@@ -641,6 +642,8 @@ def pyarrow_table_to_bytes(table: pa.Table) -> bytes:
         A table to convert.
 
     """
+    import pyarrow as pa
+
     sink = pa.BufferOutputStream()
     writer = pa.RecordBatchStreamWriter(sink, table.schema)
     writer.write_table(table)
@@ -648,7 +651,7 @@ def pyarrow_table_to_bytes(table: pa.Table) -> bytes:
     return cast(bytes, sink.getvalue().to_pybytes())
 
 
-def is_colum_type_arrow_incompatible(column: Union[Series, Index]) -> bool:
+def is_colum_type_arrow_incompatible(column: Union["Series", "Index"]) -> bool:
     """Return True if the column type is known to cause issues during Arrow conversion."""
     if column.dtype.kind in [
         # timedelta is supported by pyarrow but not in the Arrow JS:
@@ -659,6 +662,8 @@ def is_colum_type_arrow_incompatible(column: Union[Series, Index]) -> bool:
         return True
 
     if column.dtype == "object":
+        from pandas.api.types import infer_dtype, is_dict_like, is_list_like
+
         # The dtype of mixed type columns is always object, the actual type of the column
         # values can be determined via the infer_dtype function:
         # https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html
@@ -697,8 +702,8 @@ def is_colum_type_arrow_incompatible(column: Union[Series, Index]) -> bool:
 
 
 def fix_arrow_incompatible_column_types(
-    df: DataFrame, selected_columns: Optional[List[str]] = None
-) -> DataFrame:
+    df: "DataFrame", selected_columns: Optional[List[str]] = None
+) -> "DataFrame":
     """Fix column types that are not supported by Arrow table.
 
     This includes mixed types (e.g. mix of integers and strings)
@@ -719,6 +724,8 @@ def fix_arrow_incompatible_column_types(
     -------
     The fixed dataframe.
     """
+    from pandas import MultiIndex
+
     # Make a copy, but only initialize if necessary to preserve memory.
     df_copy = None
     for col in selected_columns or df.columns:
@@ -744,7 +751,7 @@ def fix_arrow_incompatible_column_types(
     return df_copy if df_copy is not None else df
 
 
-def data_frame_to_bytes(df: DataFrame) -> bytes:
+def data_frame_to_bytes(df: "DataFrame") -> bytes:
     """Serialize pandas.DataFrame to bytes using Apache Arrow.
 
     Parameters
@@ -753,6 +760,8 @@ def data_frame_to_bytes(df: DataFrame) -> bytes:
         A dataframe to convert.
 
     """
+    import pyarrow as pa
+
     try:
         table = pa.Table.from_pandas(df)
     except (pa.ArrowTypeError, pa.ArrowInvalid, pa.ArrowNotImplementedError) as ex:
@@ -766,7 +775,7 @@ def data_frame_to_bytes(df: DataFrame) -> bytes:
     return pyarrow_table_to_bytes(table)
 
 
-def bytes_to_data_frame(source: bytes) -> DataFrame:
+def bytes_to_data_frame(source: bytes) -> "DataFrame":
     """Convert bytes to pandas.DataFrame.
 
     Parameters
@@ -775,6 +784,8 @@ def bytes_to_data_frame(source: bytes) -> DataFrame:
         A bytes object to convert.
 
     """
+    import pyarrow as pa
+
     reader = pa.RecordBatchStreamReader(source)
     return reader.read_pandas()
 
@@ -792,6 +803,10 @@ def determine_data_format(input_data: Any) -> DataFormat:
     DataFormat
         The data format of the input data.
     """
+    import numpy as np
+    import pyarrow as pa
+    from pandas import DataFrame, Index, Series
+
     if input_data is None:
         return DataFormat.EMPTY
     elif isinstance(input_data, DataFrame):
@@ -849,24 +864,25 @@ def determine_data_format(input_data: Any) -> DataFormat:
     return DataFormat.UNKNOWN
 
 
-def _unify_missing_values(df: DataFrame) -> DataFrame:
+def _unify_missing_values(df: "DataFrame") -> "DataFrame":
     """Unify all missing values in a DataFrame to None.
 
     Pandas uses a variety of values to represent missing values, including np.nan,
     NaT, None, and pd.NA. This function replaces all of these values with None,
     which is the only missing value type that is supported by all data
     """
+    import numpy as np
 
     return df.fillna(np.nan).replace([np.nan], [None])
 
 
 def convert_df_to_data_format(
-    df: DataFrame, data_format: DataFormat
+    df: "DataFrame", data_format: DataFormat
 ) -> Union[
-    DataFrame,
-    Series,
-    pa.Table,
-    np.ndarray[Any, np.dtype[Any]],
+    "DataFrame",
+    "Series",
+    "pa.Table",
+    "np.ndarray[Any, np.dtype[Any]]",
     Tuple[Any],
     List[Any],
     Set[Any],
@@ -887,6 +903,9 @@ def convert_df_to_data_format(
     pd.DataFrame, pd.Series, pyarrow.Table, np.ndarray, list, set, tuple, or dict.
         The converted dataframe.
     """
+    import numpy as np
+    import pyarrow as pa
+
     if data_format in [
         DataFormat.EMPTY,
         DataFormat.PANDAS_DATAFRAME,

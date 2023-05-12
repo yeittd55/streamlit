@@ -20,9 +20,6 @@ a nice JSON schema for expressing graphs and charts.
 from datetime import date
 from typing import TYPE_CHECKING, Hashable, cast
 
-import pandas as pd
-import pyarrow as pa
-
 import streamlit.elements.legacy_vega_lite as vega_lite
 from streamlit import errors, type_util
 from streamlit.elements.utils import last_index_for_melted_dataframes
@@ -30,6 +27,7 @@ from streamlit.proto.VegaLiteChart_pb2 import VegaLiteChart as VegaLiteChartProt
 from streamlit.runtime.metrics_util import gather_metrics
 
 if TYPE_CHECKING:
+    import pandas as pd
     from altair import Chart
 
     from streamlit.delta_generator import DeltaGenerator
@@ -273,7 +271,7 @@ class LegacyAltairMixin:
         return cast("DeltaGenerator", self)
 
 
-def _is_date_column(df: pd.DataFrame, name: Hashable) -> bool:
+def _is_date_column(df: "pd.DataFrame", name: Hashable) -> bool:
     """True if the column with the given name stores datetime.date values.
 
     This function just checks the first value in the given column, so
@@ -303,6 +301,10 @@ def generate_chart(chart_type, data, width: int = 0, height: int = 0):
         # Use an empty-ish dict because if we use None the x axis labels rotate
         # 90 degrees. No idea why. Need to debug.
         data = {"": []}
+
+    import altair as alt
+    import pandas as pd
+    import pyarrow as pa
 
     if isinstance(data, pa.Table):
         raise errors.StreamlitAPIException(

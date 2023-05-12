@@ -14,12 +14,11 @@
 
 from typing import TYPE_CHECKING, Any, List, Mapping, TypeVar
 
-from pandas import DataFrame
-
 from streamlit import type_util
 from streamlit.proto.Arrow_pb2 import Arrow as ArrowProto
 
 if TYPE_CHECKING:
+    from pandas import DataFrame
     from pandas.io.formats.style import Styler
 
 
@@ -222,7 +221,7 @@ def _pandas_style_to_css(
 
 
 def _marshall_display_values(
-    proto: ArrowProto, df: DataFrame, styles: Mapping[str, Any]
+    proto: ArrowProto, df: "DataFrame", styles: Mapping[str, Any]
 ) -> None:
     """Marshall pandas.Styler display values into an Arrow proto.
 
@@ -242,7 +241,7 @@ def _marshall_display_values(
     proto.styler.display_values = type_util.data_frame_to_bytes(new_df)
 
 
-def _use_display_values(df: DataFrame, styles: Mapping[str, Any]) -> DataFrame:
+def _use_display_values(df: "DataFrame", styles: Mapping[str, Any]) -> "DataFrame":
     """Create a new pandas.DataFrame where display values are used instead of original ones.
 
     Parameters

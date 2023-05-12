@@ -35,17 +35,6 @@ if TYPE_CHECKING:
     from streamlit.delta_generator import DeltaGenerator
 
 
-try:
-    import plotly.io as pio
-
-    import streamlit.elements.lib.streamlit_plotly_theme
-
-    pio.templates.default = "streamlit"
-except ModuleNotFoundError:
-    # We have imports here because it takes too loo long to load the template default for the first graph to load
-    # We do nothing if Plotly is not installed. This is expected since Plotly is an optional dependency.
-    pass
-
 LOGGER: Final = get_logger(__name__)
 
 SharingMode: TypeAlias = Literal["streamlit", "private", "public", "secret"]
@@ -154,6 +143,8 @@ class PlotlyMixin:
         # NOTE: "figure_or_data" is the name used in Plotly's .plot() method
         # for their main parameter. I don't like the name, but it's best to
         # keep it in sync with what Plotly calls it.
+
+        import streamlit.elements.lib.streamlit_plotly_theme
 
         plotly_chart_proto = PlotlyChartProto()
         if theme != "streamlit" and theme != None:
