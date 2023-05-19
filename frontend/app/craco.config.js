@@ -13,7 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const fs = require("fs")
+const path = require("path")
+const appDirectory = fs.realpathSync(process.cwd())
+const resolveFromApp = relativePath => path.resolve(appDirectory, relativePath)
+const libSrc = resolveFromApp("../lib/src")
+const babelPreset = resolveFromApp("../lib/scripts/babel-preset-dev-env.js")
+console.log(libSrc)
 module.exports = {
+  appPath: resolveFromApp(".."),
   devServer: {
     static: {
       watch: {
@@ -45,7 +53,22 @@ module.exports = {
   },
   webpack: {
     configure: webpackConfig => {
-      webpackConfig.resolve.mainFields = ["module", "main"]
+      // const index = webpackConfig.module.rules.indexOf({
+      //   test: /\.(js|mjs|jsx|ts|tsx)$/,
+      //   include: [
+      //     resolveFromApp('src')
+      //   ],
+      // })
+      // console.log(index)
+      console.log(webpackConfig.module.rules[1].oneOf)
+
+      // "main:src lives in lib/package.json and this tells webpack to hot reload @streamlit/lib"
+      webpackConfig.resolve.mainFields = [
+        "main:src",
+        "module",
+        "main",
+        "browser",
+      ]
       // Webpack 5 requires polyfills. We don't need them, so resolve to an empty module
       webpackConfig.resolve.fallback ||= {}
       webpackConfig.resolve.fallback.tty = false
@@ -57,7 +80,11 @@ module.exports = {
         test: /\.mjs$/,
         type: "javascript/auto",
       })
-
+      webpackConfig.module.rules[1].oneOf[3].include = [
+        resolveFromApp("src"),
+        resolveFromApp(libSrc),
+      ]
+      webpackConfig.module.rules[1].oneOf[3].options.presets = [babelPreset]
       // find terser plugin
       const minimizerPlugins = webpackConfig.optimization.minimizer
       const terserPluginIndex = minimizerPlugins.findIndex(
@@ -84,7 +111,9 @@ module.exports = {
         const parallel = process.env.CIRCLECI ? false : true
         minimizerPlugins[terserPluginIndex].options.parallel = parallel
       }
-
+      console.log(webpackConfig)
+      console.log("-----------")
+      console.log(webpackConfig.module.rules[1].oneOf[3])
       return webpackConfig
     },
   },

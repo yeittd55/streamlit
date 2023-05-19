@@ -18,13 +18,13 @@ import React from "react"
 import { act } from "react-dom/test-utils"
 import { enableFetchMocks } from "jest-fetch-mock"
 
-import { mount, shallow } from "src/test_util"
-import { WidgetStateManager } from "src/WidgetStateManager"
+import { mount, shallow } from "../../../test_util"
+import { WidgetStateManager } from "../../../WidgetStateManager"
 import {
   CameraInput as CameraInputProto,
   LabelVisibilityMessage as LabelVisibilityMessageProto,
-} from "src/proto"
-import { WidgetLabel } from "src/components/widgets/BaseWidget"
+} from "../../../proto"
+import { WidgetLabel } from "../../../components/widgets/BaseWidget"
 import CameraInput, { Props, State } from "./CameraInput"
 import { FacingMode } from "./SwitchFacingModeButton"
 import WebcamComponent from "./WebcamComponent"
@@ -90,7 +90,7 @@ describe("CameraInput widget", () => {
       newestServerFileId: 0,
       clearPhotoInProgress: false,
       facingMode: FacingMode.USER,
-      imgSrc: null,
+      img../../..: null,
       shutter: false,
       minShutterEffectPassed: true,
     })
@@ -201,7 +201,7 @@ describe("CameraInput widget", () => {
       newestServerFileId: 1,
       clearPhotoInProgress: true,
       facingMode: FacingMode.USER,
-      imgSrc: null,
+      imgsrc: null,
       shutter: false,
       minShutterEffectPassed: true,
     })

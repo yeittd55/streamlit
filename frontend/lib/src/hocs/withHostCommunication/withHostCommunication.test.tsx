@@ -17,9 +17,9 @@
 import React, { PureComponent, ReactElement } from "react"
 import { act } from "react-dom/test-utils"
 
-import { ICustomThemeConfig } from "src/proto"
+import { ICustomThemeConfig } from "../../proto"
 
-import { mount, shallow } from "src/test_util"
+import { mount, shallow } from "../../test_util"
 
 import withHostCommunication, {
   HOST_COMM_VERSION,

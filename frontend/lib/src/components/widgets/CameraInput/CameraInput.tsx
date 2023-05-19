@@ -23,24 +23,24 @@ import {
   CameraInput as CameraInputProto,
   FileUploaderState as FileUploaderStateProto,
   UploadedFileInfo as UploadedFileInfoProto,
-} from "src/proto"
-import Icon from "src/components/shared/Icon"
-import { Placement } from "src/components/shared/Tooltip"
-import TooltipIcon from "src/components/shared/TooltipIcon"
+} from "../../../proto"
+import Icon from "../../../components/shared/Icon"
+import { Placement } from "../../../components/shared/Tooltip"
+import TooltipIcon from "../../../components/shared/TooltipIcon"
 import {
   StyledWidgetLabelHelp,
   WidgetLabel,
-} from "src/components/widgets/BaseWidget"
-import { FormClearHelper } from "src/components/widgets/Form"
-import { FileUploadClient } from "src/FileUploadClient"
-import { logError } from "src/util/log"
-import { WidgetStateManager } from "src/WidgetStateManager"
-import { labelVisibilityProtoValueToEnum } from "src/util/utils"
+} from "../../../components/widgets/BaseWidget"
+import { FormClearHelper } from "../../../components/widgets/Form"
+import { FileUploadClient } from "../../../FileUploadClient"
+import { logError } from "../../../util/log"
+import { WidgetStateManager } from "../../../WidgetStateManager"
+import { labelVisibilityProtoValueToEnum } from "../../../util/utils"
 import {
   UploadedStatus,
   UploadFileInfo,
   UploadingStatus,
-} from "src/components/widgets/FileUploader/UploadFileInfo"
+} from "../../../components/widgets/FileUploader/UploadFileInfo"
 import CameraInputButton from "./CameraInputButton"
 import { FacingMode } from "./SwitchFacingModeButton"
 import {
@@ -67,7 +67,7 @@ export interface State {
   /**
    * Base64-encoded image data of the current frame from the camera.
    */
-  imgSrc: string | null
+  imgsrc: string | null
 
   shutter: boolean
 
@@ -139,13 +139,13 @@ class CameraInput extends React.PureComponent<Props, State> {
     }))
   }
 
-  private handleCapture = (imgSrc: string | null): Promise<void> => {
-    if (imgSrc === null) {
+  private handleCapture = (imgsrc: string | null): Promise<void> => {
+    if (imgsrc === null) {
       return Promise.resolve()
     }
 
     this.setState({
-      imgSrc,
+      imgsrc,
       shutter: true,
       minShutterEffectPassed: false,
     })
@@ -154,7 +154,7 @@ class CameraInput extends React.PureComponent<Props, State> {
       new Promise(resolve => setTimeout(resolve, t))
 
     const promise = urltoFile(
-      imgSrc,
+      imgsrc,
       `camera-input-${new Date().toISOString().replace(/:/g, "_")}.jpg`
     )
       .then(file => this.uploadFile(file))
@@ -162,7 +162,7 @@ class CameraInput extends React.PureComponent<Props, State> {
       .then(() => {
         this.setState((prevState, _) => {
           return {
-            imgSrc,
+            imgsrc,
             shutter: prevState.shutter,
             minShutterEffectPassed: true,
           }
@@ -183,7 +183,7 @@ class CameraInput extends React.PureComponent<Props, State> {
     this.state.files.forEach(file => this.deleteFile(file.id))
 
     this.setState({
-      imgSrc: null,
+      imgsrc: null,
       clearPhotoInProgress: true,
     })
   }
@@ -192,7 +192,7 @@ class CameraInput extends React.PureComponent<Props, State> {
     const emptyState = {
       files: [],
       newestServerFileId: 0,
-      imgSrc: null,
+      imgsrc: null,
       shutter: false,
       minShutterEffectPassed: true,
       clearPhotoInProgress: false,
@@ -223,7 +223,7 @@ class CameraInput extends React.PureComponent<Props, State> {
         })
       }),
       newestServerFileId: Number(maxFileId),
-      imgSrc:
+      imgsrc:
         uploadedFileInfo.length === 0 ? "" : this.RESTORED_FROM_WIDGET_STRING,
       shutter: false,
       minShutterEffectPassed: false,
@@ -344,7 +344,7 @@ class CameraInput extends React.PureComponent<Props, State> {
       }
 
       this.setState({
-        imgSrc: null,
+        imgsrc: null,
       })
 
       this.props.widgetMgr.setFileUploaderStateValue(
@@ -387,12 +387,12 @@ class CameraInput extends React.PureComponent<Props, State> {
             </StyledWidgetLabelHelp>
           )}
         </WidgetLabel>
-        {this.state.imgSrc ? (
+        {this.state.imgsrc ? (
           <>
             <StyledBox width={width}>
-              {this.state.imgSrc !== this.RESTORED_FROM_WIDGET_STRING && (
+              {this.state.imgsrc !== this.RESTORED_FROM_WIDGET_STRING && (
                 <StyledImg
-                  src={this.state.imgSrc}
+                  src={this.state.imgsrc}
                   alt="Snapshot"
                   opacity={
                     this.state.shutter || !this.state.minShutterEffectPassed
@@ -548,7 +548,7 @@ class CameraInput extends React.PureComponent<Props, State> {
    * Clear files and errors, and reset the widget to its READY state.
    */
   private reset = (): void => {
-    this.setState({ files: [], imgSrc: null })
+    this.setState({ files: [], imgsrc: null })
   }
 
   public uploadFile = (file: File): void => {

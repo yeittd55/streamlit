@@ -17,14 +17,14 @@
 import React, { ComponentType, useState, useEffect, ReactElement } from "react"
 import hoistNonReactStatics from "hoist-non-react-statics"
 
-import { ICustomThemeConfig } from "src/proto"
+import { ICustomThemeConfig } from "../../proto"
 
-import Resolver from "src/util/Resolver"
-import { isValidOrigin } from "src/util/UriUtil"
+import Resolver from "../../util/Resolver"
+import { isValidOrigin } from "../../util/UriUtil"
 
 // Uncomment this code if testing out host communication with
 // frontend/hostframe.html:
-// import { IS_DEV_ENV } from "src/baseconsts"
+// import { IS_DEV_ENV } from "../../baseconsts"
 
 import {
   IAllowedMessageOriginsResponse,

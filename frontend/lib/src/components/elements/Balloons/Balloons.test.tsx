@@ -15,7 +15,7 @@
  */
 
 import React from "react"
-import { mount } from "src/test_util"
+import { mount } from "../../../test_util"
 
 import Balloons, { Props, NUM_BALLOONS } from "./Balloons"
 

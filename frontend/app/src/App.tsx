@@ -33,7 +33,7 @@ import {
   DialogType,
   StreamlitDialog,
 } from "src/components/StreamlitDialog"
-import { ConnectionManager } from "src/connection/ConnectionManager"
+import { ConnectionManager } from "./connection/ConnectionManager"
 import {
   PerformanceEvents,
   createFormsData,

@@ -17,23 +17,23 @@
 import {
   ComponentInstance as ComponentInstanceProto,
   SpecialArg,
-} from "src/proto"
-import AlertElement from "src/components/elements/AlertElement"
-import ErrorElement from "src/components/shared/ErrorElement"
+} from "../../../proto"
+import AlertElement from "../../../components/elements/AlertElement"
+import ErrorElement from "../../../components/shared/ErrorElement"
 import { ReactWrapper } from "enzyme"
 import {
   DEFAULT_IFRAME_FEATURE_POLICY,
   DEFAULT_IFRAME_SANDBOX_POLICY,
-} from "src/util/IFrameUtil"
-import { logWarning } from "src/util/log"
-import { mount } from "src/test_util"
-import { buildHttpUri } from "src/util/UriUtil"
-import { WidgetStateManager } from "src/WidgetStateManager"
+} from "../../../util/IFrameUtil"
+import { logWarning } from "../../../util/log"
+import { mount } from "../../../test_util"
+import { buildHttpUri } from "../../../util/UriUtil"
+import { WidgetStateManager } from "../../../WidgetStateManager"
 import React from "react"
-import { bgColorToBaseString, toExportedTheme } from "src/theme"
-import { fonts } from "src/theme/primitives/typography"
-import { mockEndpoints } from "src/mocks/mocks"
-import { mockTheme } from "src/mocks/mockTheme"
+import { bgColorToBaseString, toExportedTheme } from "../../../theme"
+import { fonts } from "../../../theme/primitives/typography"
+import { mockEndpoints } from "../../../mocks/mocks"
+import { mockTheme } from "../../../mocks/mockTheme"
 import {
   COMPONENT_READY_WARNING_TIME_MS,
   ComponentInstance,
@@ -45,13 +45,13 @@ import { ComponentRegistry } from "./ComponentRegistry"
 import { ComponentMessageType, StreamlitMessageType } from "./enums"
 
 // Mock log functions.
-jest.mock("src/util/log")
+jest.mock("../../../util/log")
 
 // We have some timeouts that we want to use fake timers for.
 jest.useFakeTimers()
 
 // Mock uri utils.
-jest.mock("src/util/UriUtil")
+jest.mock("../../../util/UriUtil")
 const mockedBuildHttpUri = buildHttpUri as jest.Mock
 mockedBuildHttpUri.mockImplementation(() => "registry/url")
 
@@ -249,7 +249,7 @@ describe("ComponentInstance", () => {
     const mc = new MockComponent()
     const iframe = mc.wrapper.childAt(0)
     expect(iframe.type()).toEqual("iframe")
-    expect(iframe.prop("src")).toContain(MOCK_COMPONENT_URL)
+    expect(iframe.prop("../../..")).toContain(MOCK_COMPONENT_URL)
     expect(iframe.prop("allow")).toEqual(DEFAULT_IFRAME_FEATURE_POLICY)
     expect(iframe.prop("sandbox")).toEqual(DEFAULT_IFRAME_SANDBOX_POLICY)
   })

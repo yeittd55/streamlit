@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { IFrame as IFrameProto } from "src/proto"
+import { IFrame as IFrameProto } from "../../../proto"
 import {
   DEFAULT_IFRAME_FEATURE_POLICY,
   DEFAULT_IFRAME_SANDBOX_POLICY,
-} from "src/util/IFrameUtil"
+} from "../../../util/IFrameUtil"
 import React, { CSSProperties, ReactElement } from "react"
 
 export interface IFrameProps {
@@ -48,7 +48,7 @@ export default function IFrame({
   // Either 'src' or 'srcDoc' will be set in our element. If 'src'
   // is set, we're loading a remote URL in the iframe.
   const src = getNonEmptyString(element.src)
-  const srcDoc = src != null ? undefined : getNonEmptyString(element.srcdoc)
+  const srcDoc = src != null ? undefined : getNonEmptyString(element.src)
 
   return (
     <iframe
