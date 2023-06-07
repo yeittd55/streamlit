@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import React, { ReactElement } from "react"
+import React, { ReactElement, useEffect, useRef } from "react"
 import { withTheme } from "@emotion/react"
 
 import { EmotionTheme } from "src/lib/theme"
-import { StyledChatContainer } from "./styled-components"
+
+import { StyledChatContainer, StyledChatAnchor } from "./styled-components"
 
 export interface Props {
   theme: EmotionTheme
@@ -27,8 +28,19 @@ export interface Props {
 
 function ChatContainer(props: Props): ReactElement {
   const { children } = props
+  const chatAnchorRef = useRef<HTMLDivElement>(null)
+  const chatContainerRef = useRef<HTMLDivElement>(null)
 
-  return <StyledChatContainer>{children}</StyledChatContainer>
+  useEffect(() => {
+    chatAnchorRef.current?.scrollIntoView({ behavior: "smooth" })
+  })
+
+  return (
+    <StyledChatContainer ref={chatContainerRef}>
+      {children}
+      <StyledChatAnchor ref={chatAnchorRef} />
+    </StyledChatContainer>
+  )
 }
 
 export default withTheme(ChatContainer)

@@ -38,7 +38,7 @@ export const useIsOverflowing = (
 
       setIsOverflowing(scrollHeight > clientHeight)
     }
-  }, [setIsOverflowing, current, current?.clientHeight])
+  }, [setIsOverflowing, current, current?.clientHeight, current?.scrollHeight])
 
   return isOverflowing
 }
