@@ -23,6 +23,9 @@ import { getElementWidgetID } from "src/lib/util/utils"
 import withExpandable from "src/lib/hocs/withExpandable"
 import { Form } from "src/lib/components/widgets/Form"
 import Tabs, { TabProps } from "src/lib/components/elements/Tabs"
+import ChatInput from "src/lib/components/widgets/Chat/ChatInput"
+import ChatBubble from "src/lib/components/widgets/Chat/ChatBubble"
+import { StyledChatContainer } from "src/lib/components/widgets/Chat/styled-components"
 
 import {
   BaseBlockProps,
@@ -175,7 +178,27 @@ const VerticalBlock = (props: BlockPropsWithoutWidth): ReactElement => {
 
         return (
           <StyledVerticalBlock width={width} data-testid="stVerticalBlock">
-            <ChildRenderer {...propsWithNewWidth} />
+            <StyledChatContainer>
+              <ChatBubble user={true} message="Who are you?" />
+              <ChatBubble
+                user={false}
+                message="I am Frosty, your personal data assistant ! I can help you work with your data on Snowflake.
+                Some of my abilities include:
+                Help you find a good dataset.
+                Generate code for SQL queries.
+                Execute SQL queries against your databases and showing the results as tables
+                Plot charts for this data. "
+              />
+              <ChatBubble user={true} message="Show me some data" />
+              <ChatBubble user={false} message="Here is some data for you:">
+                <ChildRenderer {...propsWithNewWidth} />
+              </ChatBubble>
+              <ChatBubble user={true} message="Could you try again" />
+              <ChatBubble user={false} message="Here is some data for you:">
+                <ChildRenderer {...propsWithNewWidth} />
+              </ChatBubble>
+              <ChatInput />
+            </StyledChatContainer>
           </StyledVerticalBlock>
         )
       }}
