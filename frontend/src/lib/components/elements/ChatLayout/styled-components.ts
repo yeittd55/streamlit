@@ -15,6 +15,7 @@
  */
 
 import styled from "@emotion/styled"
+import { hasLightBackgroundColor } from "src/lib/theme"
 
 export interface StyledChatBubbleContainerProps {
   isUser: boolean
@@ -60,3 +61,68 @@ export const StyledAvatarIcon = styled.div<StyledChatBubbleContainerProps>(
     justifyContent: "center",
   })
 )
+
+export const StyledChatInputContainer = styled.div(({ theme }) => {
+  const lightTheme = hasLightBackgroundColor(theme)
+  return {
+    backgroundColor: lightTheme ? theme.colors.gray10 : theme.colors.gray90,
+    borderRadius: "4px",
+    filter: lightTheme
+      ? "drop-shadow(0px 2px 8px rgba(25, 30, 36, 0.15))"
+      : "drop-shadow(0px 2px 8px rgba(191, 197, 211, 0.3))",
+    display: "flex",
+    position: "relative",
+    bottom: "0px",
+    alignItems: "center",
+    marginTop: "1rem",
+  }
+})
+
+export const StyledChatInput = styled.div(({ theme }) => {
+  const lightTheme = hasLightBackgroundColor(theme)
+  return {
+    backgroundColor: lightTheme ? theme.colors.gray10 : theme.colors.gray90,
+    position: "relative",
+    flexGrow: 1,
+    borderRadius: "4px",
+  }
+})
+export interface StyledSendIconContainerProps {
+  height: string
+}
+
+export const StyledSendIconContainer =
+  styled.button<StyledSendIconContainerProps>(({ theme, height }) => {
+    const lightTheme = hasLightBackgroundColor(theme)
+
+    return {
+      height: height,
+      border: lightTheme
+        ? `1px solid ${theme.colors.gray10}`
+        : `1px solid ${theme.colors.gray90}`,
+      borderRadius: "4px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: lightTheme ? theme.colors.gray10 : theme.colors.gray90,
+      paddingRight: "0.5rem",
+      paddingLeft: "0.5rem",
+      ":hover": {
+        border: lightTheme
+          ? `1px solid ${theme.colors.gray70}`
+          : `1px solid ${theme.colors.gray30}`,
+        backgroundColor: lightTheme
+          ? theme.colors.gray40
+          : theme.colors.gray10,
+      },
+      ":focus": {
+        border: `1px solid ${theme.colors.primary}`,
+        outline: "none",
+      },
+    }
+  })
+
+export const StyledSendIcon = styled.img({
+  width: "1.5rem",
+  height: "1.5rem",
+})

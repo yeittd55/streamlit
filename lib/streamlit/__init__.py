@@ -119,6 +119,7 @@ button = _main.button
 caption = _main.caption
 camera_input = _main.camera_input
 chat = _main.chat
+chat_input = _main.chat_input
 checkbox = _main.checkbox
 code = _main.code
 columns = _main.columns

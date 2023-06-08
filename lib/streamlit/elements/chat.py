@@ -15,13 +15,33 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Optional, Tuple, cast
 
+from streamlit.elements.utils import check_callback_rules
 from streamlit.errors import StreamlitAPIException
 from streamlit.proto.Block_pb2 import Block as BlockProto
+from streamlit.proto.ChatInput_pb2 import ChatInput as ChatInputProto
 from streamlit.runtime.metrics_util import gather_metrics
 from streamlit.runtime.scriptrunner import get_script_run_ctx
+from streamlit.runtime.state import (
+    WidgetArgs,
+    WidgetCallback,
+    WidgetKwargs,
+    register_widget,
+)
+from streamlit.type_util import Key, SupportsStr, to_key
 
 if TYPE_CHECKING:
     from streamlit.delta_generator import DeltaGenerator
+
+
+@dataclass
+class ChatInputSerde:
+    value: SupportsStr
+
+    def deserialize(self, ui_value: Optional[str], widget_id: str = "") -> str:
+        return str(ui_value if ui_value is not None else self.value)
+
+    def serialize(self, v: str) -> str:
+        return v
 
 
 @dataclass
@@ -81,6 +101,54 @@ class ChatMixin:
             ChatChildrenDeltaGenerator(chat_handler, names[0], "user"),
             ChatChildrenDeltaGenerator(chat_handler, names[1], "assistant"),
         )
+
+    def chat_input(
+        self,
+        placeholder: str | None = None,
+        *,
+        key: Optional[Key] = None,
+        on_change: Optional[WidgetCallback] = None,
+        max_chars: int | None = None,
+        disabled: bool = False,
+        args: Optional[WidgetArgs] = None,
+        kwargs: Optional[WidgetKwargs] = None,
+    ):
+        key = to_key(key)
+        check_callback_rules(self.dg, on_change)
+
+        chat_input_proto = ChatInputProto()
+        if placeholder is not None:
+            chat_input_proto.placeholder = str(placeholder)
+
+        if max_chars is not None:
+            chat_input_proto.max_chars = max_chars
+
+        # chat inputs don't have a default value
+        chat_input_proto.default = ""
+        # chat inputs can't be in forms
+        chat_input_proto.form_id = ""
+
+        ctx = get_script_run_ctx()
+        serde = ChatInputSerde("")
+        widget_state = register_widget(
+            "chat_input",
+            chat_input_proto,
+            user_key=key,
+            on_change_handler=on_change,
+            args=args,
+            kwargs=kwargs,
+            deserializer=serde.deserialize,
+            serializer=serde.serialize,
+            ctx=ctx,
+        )
+
+        chat_input_proto.disabled = disabled
+
+        if widget_state.value_changed:
+            chat_input_proto.value = widget_state.value
+            chat_input_proto.set_value = True
+
+        self.dg._enqueue("chat_input", chat_input_proto)
 
     @property
     def dg(self) -> "DeltaGenerator":
