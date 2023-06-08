@@ -56,5 +56,7 @@ export const StyledAvatarIcon = styled.div<StyledChatBubbleContainerProps>(
     fontSize: "1.25rem",
     padding: "0.75rem",
     borderRadius: "0.5rem",
+    alignItems: "center",
+    justifyContent: "center",
   })
 )

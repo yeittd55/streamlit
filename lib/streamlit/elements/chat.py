@@ -13,10 +13,12 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Tuple, cast
+from typing import TYPE_CHECKING, Optional, Tuple, cast
 
+from streamlit.errors import StreamlitAPIException
 from streamlit.proto.Block_pb2 import Block as BlockProto
 from streamlit.runtime.metrics_util import gather_metrics
+from streamlit.runtime.scriptrunner import get_script_run_ctx
 
 if TYPE_CHECKING:
     from streamlit.delta_generator import DeltaGenerator
@@ -25,25 +27,44 @@ if TYPE_CHECKING:
 @dataclass
 class ChatHandler:
     parent_dg: "DeltaGenerator"
-    last_speaker = None
+    last_speaker: Optional["ChatChildrenDeltaGenerator"] = None
 
 
 class ChatChildrenDeltaGenerator:
     def __init__(self, chat_handler, name, system_label):
-        self.chat_handler = chat_handler
-        self.chat_bubble = None
-        self.name = name
-        self.system_label = system_label
+        self._chat_handler = chat_handler
+        self._chat_bubble = None
+        self._name = name
+        self._system_label = system_label
+
+    def _update_chat_bubble_if_needed(self):
+        if self._chat_handler.last_speaker != self:
+            block_proto = BlockProto()
+            block_proto.chat_bubble.label = self._name
+            block_proto.chat_bubble.system_label = self._system_label
+            self._chat_bubble = self._chat_handler.parent_dg._block(block_proto)
+            self._chat_handler.last_speaker = self
 
     def __getattr__(self, name):
-        if self.chat_handler.last_speaker != self:
-            block_proto = BlockProto()
-            block_proto.chat_bubble.label = self.name
-            block_proto.chat_bubble.system_label = self.system_label
-            self.chat_bubble = self.chat_handler.parent_dg._block(block_proto)
-            self.chat_handler.last_speaker = self
+        self._update_chat_bubble_if_needed()
 
         return getattr(self.chat_bubble, name)
+
+    def __enter__(self):
+        ctx = get_script_run_ctx()
+        if ctx:
+            for dg in ctx.dg_stack:
+                if dg._block_type == "chat_bubble":
+                    raise StreamlitAPIException(
+                        "Chat bubble cannot be nested in another chat bubble"
+                    )
+
+        self._update_chat_bubble_if_needed()
+
+        return self._chat_bubble.__enter__()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return self._chat_bubble.__exit__(exc_type, exc_val, exc_tb)
 
 
 class ChatMixin:

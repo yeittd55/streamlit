@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { ReactElement, ReactNode, useRef } from "react"
+import React, { ReactElement, ReactNode } from "react"
 import ScrollToBottom from "react-scroll-to-bottom"
 import { css } from "@emotion/css"
 
