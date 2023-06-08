@@ -48,7 +48,7 @@ class ChatChildrenDeltaGenerator:
     def __getattr__(self, name):
         self._update_chat_bubble_if_needed()
 
-        return getattr(self.chat_bubble, name)
+        return getattr(self._chat_bubble, name)
 
     def __enter__(self):
         ctx = get_script_run_ctx()
