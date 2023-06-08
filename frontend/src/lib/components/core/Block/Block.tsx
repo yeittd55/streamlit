@@ -22,6 +22,10 @@ import { BlockNode, AppNode, ElementNode } from "src/lib/AppNode"
 import { getElementWidgetID } from "src/lib/util/utils"
 import withExpandable from "src/lib/hocs/withExpandable"
 import { Form } from "src/lib/components/widgets/Form"
+import {
+  ChatContainer,
+  ChatBubble,
+} from "src/lib/components/elements/ChatLayout"
 import Tabs, { TabProps } from "src/lib/components/elements/Tabs"
 
 import {
@@ -123,6 +127,21 @@ const BlockNodeRenderer = (props: BlockPropsWithWidth): ReactElement => {
     }
     const tabsProps: TabProps = { ...childProps, isStale, renderTabContent }
     return <Tabs {...tabsProps} />
+  }
+
+  if (props.node.deltaBlock.chat) {
+    return <ChatContainer>{child}</ChatContainer>
+  }
+
+  if (props.node.deltaBlock.chatBubble) {
+    return (
+      <ChatBubble
+        label={props.node.deltaBlock.chatBubble.label ?? ""}
+        systemLabel={props.node.deltaBlock.chatBubble.systemLabel ?? ""}
+      >
+        {child}
+      </ChatBubble>
+    )
   }
 
   return child

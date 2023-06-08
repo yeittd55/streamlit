@@ -118,6 +118,7 @@ bokeh_chart = _main.bokeh_chart
 button = _main.button
 caption = _main.caption
 camera_input = _main.camera_input
+chat = _main.chat
 checkbox = _main.checkbox
 code = _main.code
 columns = _main.columns
