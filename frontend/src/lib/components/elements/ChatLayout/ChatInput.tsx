@@ -181,9 +181,8 @@ class ChatInput extends React.PureComponent<Props, State> {
     const style = { width }
     const { placeholder } = element
     const MIN_HEIGHT = 55
-    // const suppliedHeight = 0
-    // let realHeight = Math.max(suppliedHeight, MIN_HEIGHT)
-    const realHeight = Math.max(scrollHeight, MIN_HEIGHT)
+    const MAX_HEIGHT = 100
+    const realHeight = Math.min(Math.max(scrollHeight, MIN_HEIGHT), MAX_HEIGHT)
 
     const lightTheme = hasLightBackgroundColor(theme)
 

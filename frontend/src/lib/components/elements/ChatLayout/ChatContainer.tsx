@@ -19,7 +19,7 @@ import ScrollToBottom from "react-scroll-to-bottom"
 import { css } from "@emotion/css"
 
 const CONTAINER_CSS = css({
-  maxHeight: "65vh",
+  maxHeight: `calc(100vh - 28rem)`,
   padding: "1rem",
 })
 
