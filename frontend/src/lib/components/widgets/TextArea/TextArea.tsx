@@ -99,8 +99,12 @@ class TextArea extends React.PureComponent<Props, State> {
 
   private updateFromProtobuf(): void {
     const { value } = this.props.element
+
     this.props.element.setValue = false
+
     this.setState({ value }, () => {
+      const scrollHeight = this.getScrollHeight()
+      this.setState({ scrollHeight })
       this.commitWidgetValue({ fromUi: false })
     })
   }
@@ -134,6 +138,18 @@ class TextArea extends React.PureComponent<Props, State> {
     }
   }
 
+  private getScrollHeight = (): number => {
+    let scrollHeight = 0
+    const { current: textarea } = this.textareaRef
+    if (textarea) {
+      textarea.style.height = "auto"
+      scrollHeight = textarea.scrollHeight
+      textarea.style.height = ""
+    }
+
+    return scrollHeight
+  }
+
   private onChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const { value } = e.target
     const { element } = this.props
@@ -143,13 +159,7 @@ class TextArea extends React.PureComponent<Props, State> {
       return
     }
 
-    let scrollHeight = 0
-    const { current: textarea } = this.textareaRef
-    if (textarea) {
-      textarea.style.height = "auto"
-      scrollHeight = textarea.scrollHeight
-      textarea.style.height = ""
-    }
+    const scrollHeight = this.getScrollHeight()
 
     // If the TextArea is *not* part of a form, we mark it dirty but don't
     // update its value in the WidgetMgr. This means that individual keypresses
