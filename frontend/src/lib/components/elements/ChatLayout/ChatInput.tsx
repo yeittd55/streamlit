@@ -103,6 +103,8 @@ class ChatInput extends React.PureComponent<Props, State> {
     const { value } = this.props.element
     this.props.element.setValue = false
     this.setState({ value }, () => {
+      const scrollHeight = this.getScrollHeight()
+      this.setState({ scrollHeight })
       this.commitWidgetValue({ fromUi: false })
     })
   }
@@ -130,6 +132,18 @@ class ChatInput extends React.PureComponent<Props, State> {
     )
   }
 
+  private getScrollHeight = (): number => {
+    let scrollHeight = 0
+    const { current: textarea } = this.chatInputRef
+    if (textarea) {
+      textarea.style.height = "auto"
+      scrollHeight = textarea.scrollHeight
+      textarea.style.height = ""
+    }
+
+    return scrollHeight
+  }
+
   private onChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const { value } = e.target
     const { element } = this.props
@@ -139,14 +153,7 @@ class ChatInput extends React.PureComponent<Props, State> {
       return
     }
 
-    let scrollHeight = 0
-    const { current: chatInput } = this.chatInputRef
-    if (chatInput) {
-      chatInput.style.height = "auto"
-      scrollHeight = chatInput.scrollHeight
-      chatInput.style.height = ""
-    }
-
+    const scrollHeight = this.getScrollHeight()
     this.setState({ dirty: true, value, scrollHeight })
   }
 
