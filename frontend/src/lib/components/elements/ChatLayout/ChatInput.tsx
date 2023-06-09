@@ -60,6 +60,7 @@ interface State {
 
 class ChatInput extends React.PureComponent<Props, State> {
   private readonly formClearHelper = new FormClearHelper()
+
   private chatInputRef: RefObject<HTMLTextAreaElement> = React.createRef()
 
   public state: State = {
@@ -171,14 +172,13 @@ class ChatInput extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleSubmit = () => {
+  private handleSubmit = (): void => {
     this.commitWidgetValue({ fromUi: true })
   }
 
   public render(): React.ReactNode {
-    const { theme, element, disabled, width, widgetMgr } = this.props
+    const { theme, element, disabled, widgetMgr } = this.props
     const { value, dirty, scrollHeight } = this.state
-    const style = { width }
     const { placeholder } = element
     const MIN_HEIGHT = 55
     const MAX_HEIGHT = 100
@@ -203,7 +203,7 @@ class ChatInput extends React.PureComponent<Props, State> {
             placeholder={placeholder}
             onChange={this.onChange}
             onKeyDown={this.onKeyDown}
-            aria-label={"placeholder"}
+            aria-label={placeholder}
             disabled={disabled}
             rows={1}
             overrides={{
