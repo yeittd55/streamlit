@@ -287,6 +287,8 @@ class TextWidgetsMixin:
         placeholder: Optional[str] = None,
         disabled: bool = False,
         label_visibility: LabelVisibility = "visible",
+        autogrow: bool = False,
+        is_special: bool = False,
     ) -> str:
         r"""Display a multi-line text input widget.
 
@@ -385,6 +387,8 @@ class TextWidgetsMixin:
             disabled=disabled,
             label_visibility=label_visibility,
             ctx=ctx,
+            autogrow=autogrow,
+            is_special=is_special,
         )
 
     def _text_area(
@@ -403,6 +407,8 @@ class TextWidgetsMixin:
         disabled: bool = False,
         label_visibility: LabelVisibility = "visible",
         ctx: Optional[ScriptRunContext] = None,
+        autogrow: bool = False,
+        is_special: bool = False,
     ) -> str:
         key = to_key(key)
         check_callback_rules(self.dg, on_change)
@@ -414,6 +420,8 @@ class TextWidgetsMixin:
         text_area_proto.label = label
         text_area_proto.default = str(value)
         text_area_proto.form_id = current_form_id(self.dg)
+        text_area_proto.autogrow = autogrow
+        text_area_proto.is_special = is_special
 
         if help is not None:
             text_area_proto.help = dedent(help)

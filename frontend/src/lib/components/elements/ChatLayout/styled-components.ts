@@ -52,7 +52,9 @@ export const StyledChatMessage = styled.div(({ theme }) => ({
 export const StyledAvatarIcon = styled.div<StyledChatBubbleContainerProps>(
   ({ theme, isUser }) => ({
     display: "flex",
-    backgroundColor: isUser ? theme.colors.bgColor : theme.colors.secondaryBg,
+    backgroundColor: isUser
+      ? theme.colors.backgroundColor
+      : theme.colors.primary,
     lineHeight: "1",
     fontSize: "1.25rem",
     padding: "0.75rem",

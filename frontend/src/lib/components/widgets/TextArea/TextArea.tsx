@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react"
+import React, { RefObject } from "react"
 import { TextArea as TextAreaProto } from "src/lib/proto"
 import { FormClearHelper } from "src/lib/components/widgets/Form"
 import { WidgetStateManager, Source } from "src/lib/WidgetStateManager"
@@ -48,14 +48,23 @@ interface State {
    * widget's UI, the default value is used.
    */
   value: string
+
+  /**
+   * The value of the height of the textarea. It depends on a variety of factors
+   * including the default height, and autogrowing
+   */
+  scrollHeight: number
 }
 
 class TextArea extends React.PureComponent<Props, State> {
   private readonly formClearHelper = new FormClearHelper()
 
+  private textareaRef: RefObject<HTMLTextAreaElement> = React.createRef()
+
   public state: State = {
     dirty: false,
     value: this.initialValue,
+    scrollHeight: 0,
   }
 
   get initialValue(): string {
@@ -120,7 +129,7 @@ class TextArea extends React.PureComponent<Props, State> {
   }
 
   private onBlur = (): void => {
-    if (this.state.dirty) {
+    if (this.state.dirty && !this.props.element.isSpecial) {
       this.commitWidgetValue({ fromUi: true })
     }
   }
@@ -134,11 +143,19 @@ class TextArea extends React.PureComponent<Props, State> {
       return
     }
 
+    let scrollHeight = 0
+    const { current: textarea } = this.textareaRef
+    if (textarea) {
+      textarea.style.height = "auto"
+      scrollHeight = textarea.scrollHeight
+      textarea.style.height = ""
+    }
+
     // If the TextArea is *not* part of a form, we mark it dirty but don't
     // update its value in the WidgetMgr. This means that individual keypresses
     // won't trigger a script re-run.
     if (!isInForm(this.props.element)) {
-      this.setState({ dirty: true, value })
+      this.setState({ dirty: true, value, scrollHeight })
       return
     }
 
@@ -147,7 +164,7 @@ class TextArea extends React.PureComponent<Props, State> {
     // script until the form is submitted, so this won't cause the script
     // to re-run. (This also means that we won't show the "Press Enter
     // to Apply" prompt because the TextArea will never be "dirty").
-    this.setState({ dirty: false, value }, () =>
+    this.setState({ dirty: false, value, scrollHeight }, () =>
       this.commitWidgetValue({ fromUi: true })
     )
   }
@@ -163,10 +180,22 @@ class TextArea extends React.PureComponent<Props, State> {
   }
 
   private onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
-    const { metaKey, ctrlKey } = e
+    const { metaKey, ctrlKey, shiftKey } = e
     const { dirty } = this.state
+    const isEnterKeyPressed = this.isEnterKeyPressed(e)
+    const shouldSpecialSubmit =
+      isEnterKeyPressed &&
+      this.props.element.isSpecial &&
+      !shiftKey &&
+      !ctrlKey &&
+      !metaKey
+    const shouldNotSpecialSubmit =
+      isEnterKeyPressed &&
+      !this.props.element.isSpecial &&
+      (ctrlKey || metaKey) &&
+      dirty
 
-    if (this.isEnterKeyPressed(e) && (ctrlKey || metaKey) && dirty) {
+    if (shouldSpecialSubmit || shouldNotSpecialSubmit) {
       e.preventDefault()
 
       this.commitWidgetValue({ fromUi: true })
@@ -175,9 +204,15 @@ class TextArea extends React.PureComponent<Props, State> {
 
   public render(): React.ReactNode {
     const { element, disabled, width, widgetMgr } = this.props
-    const { value, dirty } = this.state
+    const { value, dirty, scrollHeight } = this.state
     const style = { width }
-    const { height, placeholder } = element
+    const { height, placeholder, autogrow, isSpecial } = element
+    const MIN_HEIGHT = 95
+    const suppliedHeight = height ? height : 0
+    let realHeight = Math.max(suppliedHeight, MIN_HEIGHT)
+    if (autogrow) {
+      realHeight = Math.max(scrollHeight, realHeight)
+    }
 
     // Manage our form-clear event handler.
     this.formClearHelper.manageFormClearListener(
@@ -207,6 +242,7 @@ class TextArea extends React.PureComponent<Props, State> {
         <StyledTextAreaContainer>
           <UITextArea
             data-testid="stTextArea"
+            inputRef={this.textareaRef}
             value={value}
             placeholder={placeholder}
             onBlur={this.onBlur}
@@ -218,8 +254,8 @@ class TextArea extends React.PureComponent<Props, State> {
               Input: {
                 style: {
                   lineHeight: "1.4",
-                  height: height ? `${height}px` : "",
-                  minHeight: "95px",
+                  height: `${realHeight}px`,
+                  minHeight: `${MIN_HEIGHT}px`,
                   resize: "vertical",
                   "::placeholder": {
                     opacity: "0.7",
@@ -238,7 +274,7 @@ class TextArea extends React.PureComponent<Props, State> {
           dirty={dirty}
           value={value}
           maxLength={element.maxChars}
-          type={"multiline"}
+          type={isSpecial ? "single" : "multiline"}
         />
       </div>
     )

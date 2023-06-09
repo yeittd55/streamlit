@@ -31,4 +31,6 @@ message TextArea {
   string placeholder = 10;
   bool disabled = 11;
   LabelVisibilityMessage label_visibility = 12;
+  bool autogrow = 13;
+  bool is_special = 14;
 }
