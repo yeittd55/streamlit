@@ -18,7 +18,7 @@ import React, { ReactElement, ReactNode, useEffect } from "react"
 import styled from "@emotion/styled"
 import { LayoutMode, LibContext } from "src/lib/components/core/LibContext"
 
-const StyledFullScreenContainer = styled.div(({ theme }) => ({
+const StyledFullScreenContainer = styled.div(() => ({
   display: "flex",
   flexDirection: "column",
   width: "100%",
