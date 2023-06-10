@@ -326,6 +326,16 @@ class DeltaGenerator(
         return self
 
     @property
+    def _sidebar_dg(self) -> DeltaGenerator:
+        if self._root_container != RootContainer.SIDEBAR:
+            return None
+
+        if self._parent._root_container != RootContainer.SIDEBAR:
+            return self
+
+        return self._parent._sidebar_dg
+
+    @property
     def _main_dg(self) -> DeltaGenerator:
         """Return this DeltaGenerator's root - that is, the top-level ancestor
         DeltaGenerator that we belong to (this generally means the st._main

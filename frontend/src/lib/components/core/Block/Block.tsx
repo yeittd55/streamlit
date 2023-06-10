@@ -41,6 +41,7 @@ import {
   StyledVerticalBlock,
   styledVerticalBlockWrapperStyles,
 } from "./styled-components"
+import FullScreenContainer from "src/lib/components/core/FullScreenContainer"
 
 const ExpandableLayoutBlock = withExpandable(LayoutBlock)
 
@@ -58,7 +59,7 @@ const BlockNodeRenderer = (props: BlockPropsWithWidth): ReactElement => {
   const { node } = props
 
   // Allow columns to create the specified space regardless of empty state
-  if (node.isEmpty && !node.deltaBlock.column) {
+  if (node.isEmpty && !node.deltaBlock.column && !node.deltaBlock.chat) {
     return <></>
   }
 
@@ -215,10 +216,22 @@ const HorizontalBlock = (props: BlockPropsWithWidth): ReactElement => {
   )
 }
 
+const FullScreenBlock = (props: BlockPropsWithWidth): ReactElement => {
+  return (
+    <FullScreenContainer>
+      <ChildRenderer {...props} />
+    </FullScreenContainer>
+  )
+}
+
 // A container block with one of two types of layouts: vertical and horizontal.
 function LayoutBlock(props: BlockPropsWithWidth): ReactElement {
   if (props.node.deltaBlock.horizontal) {
     return <HorizontalBlock {...props} />
+  }
+
+  if (props.node.deltaBlock.fullscreen) {
+    return <FullScreenBlock {...props} />
   }
 
   return <VerticalBlock {...props} />

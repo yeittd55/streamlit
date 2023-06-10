@@ -94,6 +94,7 @@ class ChatMixin:
     ) -> Tuple[ChatChildrenDeltaGenerator, ChatChildrenDeltaGenerator]:
         block_proto = BlockProto()
         block_proto.chat.SetInParent()
+        block_proto.allow_empty = True
         chat_layout = self.dg._block(block_proto)
         chat_handler = ChatHandler(chat_layout)
 
@@ -102,6 +103,22 @@ class ChatMixin:
             ChatChildrenDeltaGenerator(chat_handler, names[1], "assistant"),
         )
 
+    @gather_metrics("fullscreen")
+    def fullscreen(self) -> "DeltaGenerator":
+        print(self.dg)
+        print(self.dg != self.dg._sidebar_dg)
+        print(self.dg._sidebar_dg)
+        if self.dg != self.dg._main_dg and self.dg != self.dg._sidebar_dg:
+            raise StreamlitAPIException(
+                "You can only add fullscreen containers to the main or sidebar"
+            )
+
+        block_proto = BlockProto()
+        block_proto.fullscreen.SetInParent()
+
+        return self.dg._block(block_proto)
+
+    @gather_metrics("chat_input")
     def chat_input(
         self,
         placeholder: str | None = None,

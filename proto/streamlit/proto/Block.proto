@@ -27,6 +27,7 @@ message Block {
     Tab tab = 7;
     Chat chat = 9;
     ChatBubble chat_bubble = 10;
+    Fullscreen fullscreen = 11;
   }
 
   bool allow_empty = 8;
@@ -68,5 +69,8 @@ message Block {
     string system_label = 2;
   }
 
-  // Next ID: 11
+  message Fullscreen {
+  }
+
+  // Next ID: 12
 }

@@ -80,6 +80,7 @@ class ScriptRunContext:
         self.command_tracking_deactivated: bool = False
         self.tracked_commands = []
         self.tracked_commands_counter = collections.Counter()
+        self.layout_mode = None
 
     def on_script_start(self) -> None:
         self._has_script_started = True
@@ -101,6 +102,8 @@ class ScriptRunContext:
             msg.HasField("delta") and self._has_script_started
         ):
             self._set_page_config_allowed = False
+
+        # Set Layout to Fullscreen if delta specifies a fullscreen element
 
         # Pass the message up to our associated ScriptRunner.
         self._enqueue(msg)

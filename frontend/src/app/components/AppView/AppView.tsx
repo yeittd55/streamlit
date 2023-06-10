@@ -39,6 +39,7 @@ import {
   StyledIFrameResizerAnchor,
   StyledAppViewBlockSpacer,
 } from "./styled-components"
+import { LayoutMode, LibContext } from "src/lib/components/core/LibContext"
 
 export interface AppViewProps {
   elements: AppRoot
@@ -117,11 +118,12 @@ function AppView(props: AppViewProps): ReactElement {
     showToolbar,
     showColoredLine,
   } = React.useContext(AppContext)
+  const { layoutMode } = React.useContext(LibContext)
   const renderBlock = (node: BlockNode): ReactElement => (
     <StyledAppViewBlockContainer
       className="block-container"
       isWideMode={wideMode}
-      showPadding={showPadding}
+      showPadding={showPadding && layoutMode !== LayoutMode.FullScreen}
       addPaddingForHeader={showToolbar || showColoredLine}
     >
       <VerticalBlock
@@ -140,6 +142,7 @@ function AppView(props: AppViewProps): ReactElement {
   )
 
   const layout = wideMode ? "wide" : "narrow"
+  const isFullScreen = layoutMode === LayoutMode.FullScreen
   const hasSidebarElements = !elements.sidebar.isEmpty
   const showSidebar =
     hasSidebarElements || (!hideSidebarNav && appPages.length > 1)
@@ -179,7 +182,9 @@ function AppView(props: AppViewProps): ReactElement {
         />
         {/* Spacer fills up dead space to ensure the footer remains at the
         bottom of the page in larger views */}
-        {(!embedded || showFooter) && <StyledAppViewBlockSpacer />}
+        {(!embedded || showFooter) && !isFullScreen && (
+          <StyledAppViewBlockSpacer />
+        )}
         {(!embedded || showFooter) && (
           <StyledAppViewFooter isWideMode={wideMode}>
             Made with{" "}

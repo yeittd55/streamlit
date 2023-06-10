@@ -16,12 +16,8 @@
 
 import React, { ReactElement, ReactNode } from "react"
 import ScrollToBottom from "react-scroll-to-bottom"
-import { css } from "@emotion/css"
-
-const CONTAINER_CSS = css({
-  maxHeight: `calc(100vh - 28rem)`,
-  padding: "1rem",
-})
+import { css, CSSInterpolation } from "@emotion/css"
+import { LayoutMode, LibContext } from "src/lib/components/core/LibContext"
 
 export interface Props {
   children: ReactNode
@@ -29,10 +25,28 @@ export interface Props {
 
 function ChatContainer(props: Props): ReactElement {
   const { children } = props
+  const { layoutMode } = React.useContext(LibContext)
+  const scrollableAreaStyle: CSSInterpolation = {
+    padding: "1rem",
+  }
+
+  const containerStyle: CSSInterpolation = {}
+  if (layoutMode === LayoutMode.Default) {
+    containerStyle.height = "calc(100vh - 28rem)"
+  } else if (layoutMode === LayoutMode.FullScreen) {
+    containerStyle.display = "flex"
+    containerStyle.flexGrow = "1"
+    containerStyle.overflow = "hidden"
+  }
 
   return (
-    <ScrollToBottom scrollViewClassName={CONTAINER_CSS}>
+    <ScrollToBottom
+      className={css(containerStyle)}
+      scrollViewClassName={css(scrollableAreaStyle)}
+      // initialScrollBehavior="auto"
+    >
       {children}
+      <div style={{ overflowAnchor: "auto" }} />
     </ScrollToBottom>
   )
 }

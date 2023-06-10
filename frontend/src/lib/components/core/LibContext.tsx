@@ -18,6 +18,10 @@ import React from "react"
 
 import { baseTheme, ThemeConfig } from "src/lib/theme"
 
+export enum LayoutMode {
+  Default,
+  FullScreen,
+}
 export interface Props {
   /** True if the app is in full-screen mode. */
   isFullScreen: boolean
@@ -51,11 +55,17 @@ export interface Props {
    * @see ThemeCreatorDialog
    */
   addThemes: (themes: ThemeConfig[]) => void
+
+  layoutMode: LayoutMode
+
+  setLayoutMode: (mode: LayoutMode) => void
 }
 
 export const LibContext = React.createContext<Props>({
   isFullScreen: false,
   setFullScreen: () => {},
+  layoutMode: LayoutMode.Default,
+  setLayoutMode: () => {},
   addScriptFinishedHandler: () => {},
   removeScriptFinishedHandler: () => {},
   activeTheme: baseTheme,

@@ -130,7 +130,7 @@ import withScreencast, {
 // Used to import fonts + responsive reboot items
 import "src/assets/css/theme.scss"
 import { ensureError } from "src/lib/util/ErrorHandling"
-import { LibContext } from "src/lib/components/core/LibContext"
+import { LayoutMode, LibContext } from "src/lib/components/core/LibContext"
 
 export interface Props {
   screenCast: ScreenCastHOC
@@ -147,6 +147,7 @@ interface State {
   connectionState: ConnectionState
   elements: AppRoot
   isFullScreen: boolean
+  layoutMode: LayoutMode
   scriptRunId: string
   scriptName: string
   appHash: string | null
@@ -248,6 +249,7 @@ export class App extends PureComponent<Props, State> {
       connectionState: ConnectionState.INITIAL,
       elements: AppRoot.empty("Please wait..."),
       isFullScreen: false,
+      layoutMode: LayoutMode.Default,
       scriptName: "",
       scriptRunId: "<null>",
       appHash: null,
@@ -1470,6 +1472,10 @@ export class App extends PureComponent<Props, State> {
     this.setState({ isFullScreen })
   }
 
+  setLayoutMode = (layoutMode: LayoutMode): void => {
+    this.setState({ layoutMode })
+  }
+
   addScriptFinishedHandler = (func: () => void): void => {
     this.setState((prevState, _) => {
       return {
@@ -1536,6 +1542,7 @@ export class App extends PureComponent<Props, State> {
       dialog,
       elements,
       initialSidebarState,
+      layoutMode,
       menuItems,
       isFullScreen,
       scriptRunId,
@@ -1602,6 +1609,8 @@ export class App extends PureComponent<Props, State> {
             setTheme: this.setAndSendTheme,
             availableThemes: this.props.theme.availableThemes,
             addThemes: this.props.theme.addThemes,
+            layoutMode: layoutMode,
+            setLayoutMode: this.setLayoutMode,
           }}
         >
           <HotKeys
