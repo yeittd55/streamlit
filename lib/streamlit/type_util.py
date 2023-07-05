@@ -505,6 +505,8 @@ def convert_anything_to_df(
     pandas.DataFrame
 
     """
+    from pandas import DataFrame
+
     if is_type(data, _PANDAS_DF_TYPE_STR):
         return data.copy() if ensure_copy else data
 
