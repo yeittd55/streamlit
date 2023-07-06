@@ -7,7 +7,6 @@
       "declaration": true,
       "outDir": "dist",
       "rootDir": "src",
-      "declarationDir": "dist/types",
       "paths": {
           "@streamlit/test/*": ["test/src/*"]
       }
