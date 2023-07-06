@@ -15,12 +15,12 @@
  */
 
 import React from "react"
-import { mount } from "src/test_util"
+import { mount } from "@st-lib/test_util"
 
 import Snow, {
   SnowProps,
   NUM_FLAKES,
-} from "src/components/elements/Snow/index"
+} from "@st-lib/components/elements/Snow/index"
 
 const getProps = (): SnowProps => ({
   scriptRunId: "51522269",

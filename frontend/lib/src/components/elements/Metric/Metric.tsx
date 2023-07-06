@@ -15,16 +15,16 @@
  */
 
 import React, { ReactElement } from "react"
-import { Metric as MetricProto } from "src/proto"
-import { EmotionTheme } from "src/theme"
-import { labelVisibilityProtoValueToEnum } from "src/util/utils"
-import Icon from "src/components/shared/Icon"
+import { Metric as MetricProto } from "@st-lib/proto"
+import { EmotionTheme } from "@st-lib/theme"
+import { labelVisibilityProtoValueToEnum } from "@st-lib/util/utils"
+import Icon from "@st-lib/components/shared/Icon"
 import { useTheme } from "@emotion/react"
 import { ArrowDownward, ArrowUpward } from "@emotion-icons/material-outlined"
-import { StyledWidgetLabelHelpInline } from "src/components/widgets/BaseWidget"
-import TooltipIcon from "src/components/shared/TooltipIcon"
-import { Placement } from "src/components/shared/Tooltip"
-import StreamlitMarkdown from "src/components/shared/StreamlitMarkdown"
+import { StyledWidgetLabelHelpInline } from "@st-lib/components/widgets/BaseWidget"
+import TooltipIcon from "@st-lib/components/shared/TooltipIcon"
+import { Placement } from "@st-lib/components/shared/Tooltip"
+import StreamlitMarkdown from "@st-lib/components/shared/StreamlitMarkdown"
 import {
   StyledTruncateText,
   StyledMetricLabelText,

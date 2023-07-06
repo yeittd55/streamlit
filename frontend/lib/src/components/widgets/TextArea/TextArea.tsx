@@ -15,19 +15,19 @@
  */
 
 import React from "react"
-import { TextArea as TextAreaProto } from "src/proto"
-import { FormClearHelper } from "src/components/widgets/Form"
-import { WidgetStateManager, Source } from "src/WidgetStateManager"
+import { TextArea as TextAreaProto } from "@st-lib/proto"
+import { FormClearHelper } from "@st-lib/components/widgets/Form"
+import { WidgetStateManager, Source } from "@st-lib/WidgetStateManager"
 
 import { Textarea as UITextArea } from "baseui/textarea"
-import InputInstructions from "src/components/shared/InputInstructions/InputInstructions"
+import InputInstructions from "@st-lib/components/shared/InputInstructions/InputInstructions"
 import {
   WidgetLabel,
   StyledWidgetLabelHelp,
-} from "src/components/widgets/BaseWidget"
-import TooltipIcon from "src/components/shared/TooltipIcon"
-import { Placement } from "src/components/shared/Tooltip"
-import { isInForm, labelVisibilityProtoValueToEnum } from "src/util/utils"
+} from "@st-lib/components/widgets/BaseWidget"
+import TooltipIcon from "@st-lib/components/shared/TooltipIcon"
+import { Placement } from "@st-lib/components/shared/Tooltip"
+import { isInForm, labelVisibilityProtoValueToEnum } from "@st-lib/util/utils"
 import { StyledTextAreaContainer } from "./styled-components"
 
 export interface Props {

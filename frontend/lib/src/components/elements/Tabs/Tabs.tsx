@@ -18,9 +18,9 @@ import React, { ReactElement, useRef, useState, useEffect } from "react"
 import { useTheme } from "@emotion/react"
 import { Tabs as UITabs, Tab as UITab } from "baseui/tabs-motion"
 
-import { BlockNode, AppNode } from "src/AppNode"
-import { BlockPropsWithoutWidth } from "src/components/core/Block"
-import StreamlitMarkdown from "src/components/shared/StreamlitMarkdown"
+import { BlockNode, AppNode } from "@st-lib/AppNode"
+import { BlockPropsWithoutWidth } from "@st-lib/components/core/Block"
+import StreamlitMarkdown from "@st-lib/components/shared/StreamlitMarkdown"
 
 import { StyledTabContainer } from "./styled-components"
 

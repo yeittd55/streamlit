@@ -15,8 +15,8 @@
  */
 
 import React, { ReactElement } from "react"
-import { isFromMac } from "src/util/utils"
-import { StyledWidgetInstructions } from "src/components/widgets/BaseWidget"
+import { isFromMac } from "@st-lib/util/utils"
+import { StyledWidgetInstructions } from "@st-lib/components/widgets/BaseWidget"
 import { StyledMessage } from "./styled-components"
 
 export interface Props {

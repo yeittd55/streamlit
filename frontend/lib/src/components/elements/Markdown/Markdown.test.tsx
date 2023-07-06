@@ -15,13 +15,13 @@
  */
 
 import React from "react"
-import { shallow, mount } from "src/test_util"
-import { Markdown as MarkdownProto } from "src/proto"
+import { shallow, mount } from "@st-lib/test_util"
+import { Markdown as MarkdownProto } from "@st-lib/proto"
 import Markdown, { MarkdownProps } from "./Markdown"
 import {
   InlineTooltipIcon,
   StyledLabelHelpWrapper,
-} from "src/components/shared/TooltipIcon"
+} from "@st-lib/components/shared/TooltipIcon"
 
 const getProps = (
   elementProps: Partial<MarkdownProps> = {}

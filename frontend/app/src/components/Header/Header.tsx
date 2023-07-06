@@ -15,7 +15,7 @@
  */
 
 import React, { ReactElement, ReactNode } from "react"
-import { AppContext } from "src/components/AppContext"
+import { AppContext } from "@st-app/components/AppContext"
 import {
   StyledHeader,
   StyledHeaderDecoration,

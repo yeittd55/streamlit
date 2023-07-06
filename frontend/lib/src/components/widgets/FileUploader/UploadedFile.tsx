@@ -20,11 +20,11 @@ import {
   Error,
   InsertDriveFile,
 } from "@emotion-icons/material-outlined"
-import BaseButton, { BaseButtonKind } from "src/components/shared/BaseButton"
-import Icon from "src/components/shared/Icon"
-import ProgressBar, { Size } from "src/components/shared/ProgressBar"
-import { Small } from "src/components/shared/TextElements"
-import { FileSize, getSizeDisplay } from "src/util/FileHelper"
+import BaseButton, { BaseButtonKind } from "@st-lib/components/shared/BaseButton"
+import Icon from "@st-lib/components/shared/Icon"
+import ProgressBar, { Size } from "@st-lib/components/shared/ProgressBar"
+import { Small } from "@st-lib/components/shared/TextElements"
+import { FileSize, getSizeDisplay } from "@st-lib/util/FileHelper"
 import {
   StyledUploadedFile,
   StyledFileErrorIcon,

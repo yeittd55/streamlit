@@ -15,7 +15,7 @@
  */
 
 import React, { ReactElement } from "react"
-import AlertContainer, { Kind } from "src/components/shared/AlertContainer"
+import AlertContainer, { Kind } from "@st-lib/components/shared/AlertContainer"
 import { StyledPreError } from "./styled-components"
 
 export interface ErrorElementProps {

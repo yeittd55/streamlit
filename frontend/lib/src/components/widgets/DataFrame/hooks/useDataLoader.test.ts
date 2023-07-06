@@ -19,15 +19,15 @@ import React from "react"
 import { renderHook } from "@testing-library/react-hooks"
 import { GridCellKind } from "@glideapps/glide-data-grid"
 
-import { Quiver } from "src/dataframes/Quiver"
-import { Arrow as ArrowProto } from "src/proto"
-import { UNICODE } from "src/mocks/arrow"
+import { Quiver } from "@st-lib/dataframes/Quiver"
+import { Arrow as ArrowProto } from "@st-lib/proto"
+import { UNICODE } from "@st-lib/mocks/arrow"
 import {
   BaseColumn,
   TextColumn,
   isErrorCell,
-} from "src/components/widgets/DataFrame/columns"
-import EditingState from "src/components/widgets/DataFrame/EditingState"
+} from "@st-lib/components/widgets/DataFrame/columns"
+import EditingState from "@st-lib/components/widgets/DataFrame/EditingState"
 
 import useDataLoader from "./useDataLoader"
 

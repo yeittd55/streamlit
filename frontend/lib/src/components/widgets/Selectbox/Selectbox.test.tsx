@@ -15,11 +15,11 @@
  */
 
 import React from "react"
-import { mount } from "src/test_util"
-import { WidgetStateManager } from "src/WidgetStateManager"
+import { mount } from "@st-lib/test_util"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
 
 import { Select as UISelect } from "baseui/select"
-import { Selectbox as SelectboxProto } from "src/proto"
+import { Selectbox as SelectboxProto } from "@st-lib/proto"
 import Selectbox, { Props } from "./Selectbox"
 
 const getProps = (elementProps: Partial<SelectboxProto> = {}): Props => ({

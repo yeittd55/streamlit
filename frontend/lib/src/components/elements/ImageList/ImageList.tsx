@@ -21,10 +21,10 @@ import {
   IImage,
   Image as ImageProto,
   ImageList as ImageListProto,
-} from "src/proto"
-import withFullScreenWrapper from "src/hocs/withFullScreenWrapper"
-import { xssSanitizeSvg } from "src/util/UriUtil"
-import { StreamlitEndpoints } from "src/StreamlitEndpoints"
+} from "@st-lib/proto"
+import withFullScreenWrapper from "@st-lib/hocs/withFullScreenWrapper"
+import { xssSanitizeSvg } from "@st-lib/util/UriUtil"
+import { StreamlitEndpoints } from "@st-lib/StreamlitEndpoints"
 
 import {
   StyledCaption,

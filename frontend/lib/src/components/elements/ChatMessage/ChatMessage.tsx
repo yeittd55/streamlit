@@ -18,9 +18,9 @@ import React, { ReactElement } from "react"
 import { useTheme } from "@emotion/react"
 import { Face, SmartToy } from "@emotion-icons/material-outlined"
 
-import { Block as BlockProto } from "src/proto"
-import Icon from "src/components/shared/Icon"
-import { EmotionTheme } from "src/theme"
+import { Block as BlockProto } from "@st-lib/proto"
+import Icon from "@st-lib/components/shared/Icon"
+import { EmotionTheme } from "@st-lib/theme"
 
 import {
   StyledChatMessageContainer,

@@ -27,8 +27,8 @@ import {
   DataFrameCell,
   Quiver,
   Type as ArrowType,
-} from "src/dataframes/Quiver"
-import { notNullOrUndefined, isNullOrUndefined } from "src/util/utils"
+} from "@st-lib/dataframes/Quiver"
+import { notNullOrUndefined, isNullOrUndefined } from "@st-lib/util/utils"
 
 import {
   BaseColumn,

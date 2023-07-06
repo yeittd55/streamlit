@@ -15,11 +15,11 @@
  */
 
 import React, { ReactElement } from "react"
-import ErrorElement from "src/components/shared/ErrorElement"
+import ErrorElement from "@st-lib/components/shared/ErrorElement"
 import {
   MapboxTokenFetchingError,
   MapboxTokenNotProvidedError,
-} from "src/hocs/withMapboxToken/MapboxToken"
+} from "@st-lib/hocs/withMapboxToken/MapboxToken"
 
 interface Props {
   error: Error | MapboxTokenFetchingError | MapboxTokenNotProvidedError

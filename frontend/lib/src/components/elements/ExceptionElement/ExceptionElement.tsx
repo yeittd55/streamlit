@@ -15,9 +15,9 @@
  */
 
 import React, { ReactElement } from "react"
-import AlertContainer, { Kind } from "src/components/shared/AlertContainer"
-import StreamlitMarkdown from "src/components/shared/StreamlitMarkdown"
-import { Exception as ExceptionProto } from "src/proto"
+import AlertContainer, { Kind } from "@st-lib/components/shared/AlertContainer"
+import StreamlitMarkdown from "@st-lib/components/shared/StreamlitMarkdown"
+import { Exception as ExceptionProto } from "@st-lib/proto"
 import {
   StyledMessageType,
   StyledStackTrace,

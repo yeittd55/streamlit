@@ -21,9 +21,9 @@ import {
 } from "@glideapps/glide-data-grid"
 import { RangeCellType } from "@glideapps/glide-data-grid-cells"
 
-import { Quiver } from "src/dataframes/Quiver"
-import { isNullOrUndefined, notNullOrUndefined } from "src/util/utils"
-import { isIntegerType } from "src/components/widgets/DataFrame/isIntegerType"
+import { Quiver } from "@st-lib/dataframes/Quiver"
+import { isNullOrUndefined, notNullOrUndefined } from "@st-lib/util/utils"
+import { isIntegerType } from "@st-lib/components/widgets/DataFrame/isIntegerType"
 
 import {
   BaseColumn,

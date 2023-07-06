@@ -20,7 +20,7 @@ import "@testing-library/jest-dom"
 import {
   AppContext,
   Props as AppContextProps,
-} from "src/components/AppContext"
+} from "@st-app/components/AppContext"
 import {
   ScriptRunState,
   BlockNode,

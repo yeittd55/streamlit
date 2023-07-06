@@ -19,7 +19,7 @@ import {
   BaseColumn,
   TextColumn,
   NumberColumn,
-} from "src/components/widgets/DataFrame/columns"
+} from "@st-lib/components/widgets/DataFrame/columns"
 
 import useTooltips, {
   DEBOUNCE_TIME_MS,

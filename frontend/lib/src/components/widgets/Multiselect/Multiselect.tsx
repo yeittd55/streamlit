@@ -18,9 +18,9 @@ import React from "react"
 import { isMobile } from "react-device-detect"
 import without from "lodash/without"
 import { withTheme } from "@emotion/react"
-import { FormClearHelper } from "src/components/widgets/Form"
-import { WidgetStateManager, Source } from "src/WidgetStateManager"
-import { MultiSelect as MultiSelectProto } from "src/proto"
+import { FormClearHelper } from "@st-lib/components/widgets/Form"
+import { WidgetStateManager, Source } from "@st-lib/WidgetStateManager"
+import { MultiSelect as MultiSelectProto } from "@st-lib/proto"
 import { ChevronDown } from "baseui/icon"
 import {
   TYPE,
@@ -31,14 +31,14 @@ import {
 import {
   WidgetLabel,
   StyledWidgetLabelHelp,
-} from "src/components/widgets/BaseWidget"
-import { StyledUISelect } from "src/components/widgets/Multiselect/styled-components"
-import TooltipIcon from "src/components/shared/TooltipIcon"
-import { Placement } from "src/components/shared/Tooltip"
-import { VirtualDropdown } from "src/components/shared/Dropdown"
-import { fuzzyFilterSelectOptions } from "src/components/shared/Dropdown/Selectbox"
-import { labelVisibilityProtoValueToEnum } from "src/util/utils"
-import { EmotionTheme } from "src/theme"
+} from "@st-lib/components/widgets/BaseWidget"
+import { StyledUISelect } from "@st-lib/components/widgets/Multiselect/styled-components"
+import TooltipIcon from "@st-lib/components/shared/TooltipIcon"
+import { Placement } from "@st-lib/components/shared/Tooltip"
+import { VirtualDropdown } from "@st-lib/components/shared/Dropdown"
+import { fuzzyFilterSelectOptions } from "@st-lib/components/shared/Dropdown/Selectbox"
+import { labelVisibilityProtoValueToEnum } from "@st-lib/util/utils"
+import { EmotionTheme } from "@st-lib/theme"
 
 export interface Props {
   disabled: boolean

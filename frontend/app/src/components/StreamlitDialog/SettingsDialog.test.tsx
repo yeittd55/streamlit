@@ -25,7 +25,7 @@ import {
   mockSessionInfo,
   LibContextProps,
 } from "@streamlit/lib"
-import { SegmentMetricsManager } from "src/SegmentMetricsManager"
+import { SegmentMetricsManager } from "@st-app/SegmentMetricsManager"
 
 import { SettingsDialog, Props } from "./SettingsDialog"
 

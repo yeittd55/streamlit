@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import emotionBaseTheme from "src/theme/emotionBaseTheme"
-import { createEmotionColors } from "src/theme/getColors"
+import emotionBaseTheme from "@st-lib/theme/emotionBaseTheme"
+import { createEmotionColors } from "@st-lib/theme/getColors"
 import genericColors from "./themeColors"
 
 export default {

@@ -15,10 +15,10 @@
  */
 
 import React from "react"
-import { mount } from "src/test_util"
+import { mount } from "@st-lib/test_util"
 
 import { BaseProvider, LightTheme } from "baseui"
-import { Spinner as SpinnerProto } from "src/proto"
+import { Spinner as SpinnerProto } from "@st-lib/proto"
 import Spinner, { SpinnerProps } from "./Spinner"
 
 const getProps = (

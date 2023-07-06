@@ -25,9 +25,9 @@ import {
   BaseColumn,
   TextColumn,
   NumberColumn,
-} from "src/components/widgets/DataFrame/columns"
-import EditingState from "src/components/widgets/DataFrame/EditingState"
-import { notNullOrUndefined } from "src/util/utils"
+} from "@st-lib/components/widgets/DataFrame/columns"
+import EditingState from "@st-lib/components/widgets/DataFrame/EditingState"
+import { notNullOrUndefined } from "@st-lib/util/utils"
 
 import useDataEditor from "./useDataEditor"
 

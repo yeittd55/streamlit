@@ -15,10 +15,10 @@
  */
 
 import React from "react"
-import { mount } from "src/test_util"
+import { mount } from "@st-lib/test_util"
 
-import { UNICODE, EMPTY } from "src/mocks/arrow"
-import { Quiver } from "src/dataframes/Quiver"
+import { UNICODE, EMPTY } from "@st-lib/mocks/arrow"
+import { Quiver } from "@st-lib/dataframes/Quiver"
 import { ArrowTable, TableProps } from "./ArrowTable"
 
 const getProps = (data: Uint8Array): TableProps => ({

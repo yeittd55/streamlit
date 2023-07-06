@@ -25,11 +25,11 @@ import { useTheme } from "@emotion/react"
 import { Send } from "@emotion-icons/material-rounded"
 import { Textarea as UITextArea } from "baseui/textarea"
 
-import { ChatInput as ChatInputProto } from "src/proto"
-import { WidgetStateManager } from "src/WidgetStateManager"
-import Icon from "src/components/shared/Icon"
-import InputInstructions from "src/components/shared/InputInstructions/InputInstructions"
-import { hasLightBackgroundColor } from "src/theme"
+import { ChatInput as ChatInputProto } from "@st-lib/proto"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
+import Icon from "@st-lib/components/shared/Icon"
+import InputInstructions from "@st-lib/components/shared/InputInstructions/InputInstructions"
+import { hasLightBackgroundColor } from "@st-lib/theme"
 
 import {
   StyledChatInputContainer,

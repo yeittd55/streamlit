@@ -15,12 +15,12 @@
  */
 
 import React from "react"
-import { mount } from "src/test_util"
+import { mount } from "@st-lib/test_util"
 import Plot from "react-plotly.js"
 
-import ThemeProvider from "src/components/core/ThemeProvider"
-import { PlotlyChart as PlotlyChartProto } from "src/proto"
-import { mockTheme } from "src/mocks/mockTheme"
+import ThemeProvider from "@st-lib/components/core/ThemeProvider"
+import { PlotlyChart as PlotlyChartProto } from "@st-lib/proto"
+import { mockTheme } from "@st-lib/mocks/mockTheme"
 import mock from "./mock"
 import { DEFAULT_HEIGHT, PlotlyChartProps } from "./PlotlyChart"
 

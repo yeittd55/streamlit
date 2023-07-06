@@ -15,8 +15,8 @@
  */
 
 import React, { ReactElement, useEffect, useRef } from "react"
-import { Audio as AudioProto } from "src/proto"
-import { StreamlitEndpoints } from "src/StreamlitEndpoints"
+import { Audio as AudioProto } from "@st-lib/proto"
+import { StreamlitEndpoints } from "@st-lib/StreamlitEndpoints"
 
 export interface AudioProps {
   endpoints: StreamlitEndpoints

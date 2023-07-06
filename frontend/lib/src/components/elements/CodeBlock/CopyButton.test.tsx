@@ -16,7 +16,7 @@
 
 import React from "react"
 import Clipboard from "clipboard"
-import { shallow, mount } from "src/test_util"
+import { shallow, mount } from "@st-lib/test_util"
 
 import CopyButton from "./CopyButton"
 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { SessionInfo } from "src/SessionInfo"
-import { NewSession } from "src/proto"
+import { SessionInfo } from "@st-lib/SessionInfo"
+import { NewSession } from "@st-lib/proto"
 import { mockSessionInfoProps } from "./mocks/mocks"
 
 test("Throws an error when used before initialization", () => {

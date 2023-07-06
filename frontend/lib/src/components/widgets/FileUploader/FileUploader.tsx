@@ -23,19 +23,19 @@ import {
   FileUploader as FileUploaderProto,
   FileUploaderState as FileUploaderStateProto,
   UploadedFileInfo as UploadedFileInfoProto,
-} from "src/proto"
-import { FormClearHelper } from "src/components/widgets/Form"
+} from "@st-lib/proto"
+import { FormClearHelper } from "@st-lib/components/widgets/Form"
 
-import { FileSize, getSizeDisplay, sizeConverter } from "src/util/FileHelper"
-import { FileUploadClient } from "src/FileUploadClient"
-import { WidgetStateManager } from "src/WidgetStateManager"
+import { FileSize, getSizeDisplay, sizeConverter } from "@st-lib/util/FileHelper"
+import { FileUploadClient } from "@st-lib/FileUploadClient"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
 import {
   WidgetLabel,
   StyledWidgetLabelHelp,
-} from "src/components/widgets/BaseWidget"
-import TooltipIcon from "src/components/shared/TooltipIcon"
-import { Placement } from "src/components/shared/Tooltip"
-import { labelVisibilityProtoValueToEnum } from "src/util/utils"
+} from "@st-lib/components/widgets/BaseWidget"
+import TooltipIcon from "@st-lib/components/shared/TooltipIcon"
+import { Placement } from "@st-lib/components/shared/Tooltip"
+import { labelVisibilityProtoValueToEnum } from "@st-lib/util/utils"
 import FileDropzone from "./FileDropzone"
 import { StyledFileUploader } from "./styled-components"
 import UploadedFiles from "./UploadedFiles"

@@ -17,23 +17,23 @@
 import {
   ComponentInstance as ComponentInstanceProto,
   SpecialArg,
-} from "src/proto"
-import AlertElement from "src/components/elements/AlertElement"
-import ErrorElement from "src/components/shared/ErrorElement"
+} from "@st-lib/proto"
+import AlertElement from "@st-lib/components/elements/AlertElement"
+import ErrorElement from "@st-lib/components/shared/ErrorElement"
 import { ReactWrapper } from "enzyme"
 import {
   DEFAULT_IFRAME_FEATURE_POLICY,
   DEFAULT_IFRAME_SANDBOX_POLICY,
-} from "src/util/IFrameUtil"
-import { logWarning } from "src/util/log"
-import { mount } from "src/test_util"
-import { buildHttpUri } from "src/util/UriUtil"
-import { WidgetStateManager } from "src/WidgetStateManager"
+} from "@st-lib/util/IFrameUtil"
+import { logWarning } from "@st-lib/util/log"
+import { mount } from "@st-lib/test_util"
+import { buildHttpUri } from "@st-lib/util/UriUtil"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
 import React from "react"
-import { bgColorToBaseString, toExportedTheme } from "src/theme"
-import { fonts } from "src/theme/primitives/typography"
-import { mockEndpoints } from "src/mocks/mocks"
-import { mockTheme } from "src/mocks/mockTheme"
+import { bgColorToBaseString, toExportedTheme } from "@st-lib/theme"
+import { fonts } from "@st-lib/theme/primitives/typography"
+import { mockEndpoints } from "@st-lib/mocks/mocks"
+import { mockTheme } from "@st-lib/mocks/mockTheme"
 import {
   COMPONENT_READY_WARNING_TIME_MS,
   ComponentInstance,
@@ -45,18 +45,18 @@ import { ComponentRegistry } from "./ComponentRegistry"
 import { ComponentMessageType, StreamlitMessageType } from "./enums"
 
 // Mock log functions.
-jest.mock("src/util/log")
+jest.mock("@st-lib/util/log")
 
 // We have some timeouts that we want to use fake timers for.
 jest.useFakeTimers()
 
 // Mock uri utils.
-jest.mock("src/util/UriUtil")
+jest.mock("@st-lib/util/UriUtil")
 const mockedBuildHttpUri = buildHttpUri as jest.Mock
 mockedBuildHttpUri.mockImplementation(() => "registry/url")
 
 // Mock our WidgetStateManager
-jest.mock("src/WidgetStateManager")
+jest.mock("@st-lib/WidgetStateManager")
 
 const MOCK_COMPONENT_URL = "http://a.mock.url"
 const MOCK_WIDGET_ID = "mock_widget_id"

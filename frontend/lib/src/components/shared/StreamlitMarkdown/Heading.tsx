@@ -15,8 +15,8 @@
  */
 
 import React, { Fragment, ReactElement } from "react"
-import { Heading as HeadingProto } from "src/proto"
-import IsSidebarContext from "src/components/core/IsSidebarContext"
+import { Heading as HeadingProto } from "@st-lib/proto"
+import IsSidebarContext from "@st-lib/components/core/IsSidebarContext"
 
 import {
   StyledHeaderContainer,
@@ -27,7 +27,7 @@ import "katex/dist/katex.min.css"
 import {
   InlineTooltipIcon,
   StyledLabelHelpWrapper,
-} from "src/components/shared/TooltipIcon"
+} from "@st-lib/components/shared/TooltipIcon"
 import { HeadingWithAnchor, RenderedMarkdown, Tags } from "./StreamlitMarkdown"
 
 export interface HeadingProtoProps {

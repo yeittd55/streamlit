@@ -17,9 +17,9 @@
 import React from "react"
 import "@testing-library/jest-dom"
 import { fireEvent } from "@testing-library/react"
-import { render } from "src/test_util"
-import { ChatInput as ChatInputProto } from "src/proto"
-import { WidgetStateManager } from "src/WidgetStateManager"
+import { render } from "@st-lib/test_util"
+import { ChatInput as ChatInputProto } from "@st-lib/proto"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
 
 import ChatInput, { Props } from "./ChatInput"
 

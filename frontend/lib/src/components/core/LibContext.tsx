@@ -16,7 +16,7 @@
 
 import React from "react"
 
-import { baseTheme, ThemeConfig } from "src/theme"
+import { baseTheme, ThemeConfig } from "@st-lib/theme"
 
 export interface LibContextProps {
   /** True if the app is in full-screen mode. */

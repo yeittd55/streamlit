@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.build.json",
+    "compilerOptions": {
+      "checkJs": false,
+      "noEmit": false,
+      "emitDeclarationOnly": true,
+      "declaration": true,
+      "outDir": "dist",
+      "rootDir": "src",
+      "declarationDir": "dist/types",
+      "paths": {
+          "@streamlit/test/*": ["test/src/*"]
+      }
+    },
+    "include": ["src"],
+    "exclude": ["node_modules/**/*"]
+  }

@@ -15,7 +15,7 @@
  */
 
 import { CancelToken } from "axios"
-import { SessionInfo } from "src/SessionInfo"
+import { SessionInfo } from "@st-lib/SessionInfo"
 import _ from "lodash"
 import { StreamlitEndpoints } from "./StreamlitEndpoints"
 import { isValidFormId } from "./util/utils"

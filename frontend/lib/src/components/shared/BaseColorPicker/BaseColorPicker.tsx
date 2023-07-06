@@ -20,11 +20,11 @@ import { ChromePicker, ColorResult } from "react-color"
 import {
   WidgetLabel,
   StyledWidgetLabelHelpInline,
-} from "src/components/widgets/BaseWidget"
-import TooltipIcon from "src/components/shared/TooltipIcon"
-import { Placement } from "src/components/shared/Tooltip"
-import { LabelVisibilityOptions } from "src/util/utils"
-import { logWarning } from "src/util/log"
+} from "@st-lib/components/widgets/BaseWidget"
+import TooltipIcon from "@st-lib/components/shared/TooltipIcon"
+import { Placement } from "@st-lib/components/shared/Tooltip"
+import { LabelVisibilityOptions } from "@st-lib/util/utils"
+import { logWarning } from "@st-lib/util/log"
 import {
   StyledColorPicker,
   StyledChromePicker,

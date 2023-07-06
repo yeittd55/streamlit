@@ -15,9 +15,9 @@
  */
 
 import React from "react"
-import { mount } from "src/test_util"
-import { BlockNode } from "src/AppNode"
-import { Block as BlockProto } from "src/proto"
+import { mount } from "@st-lib/test_util"
+import { BlockNode } from "@st-lib/AppNode"
+import { Block as BlockProto } from "@st-lib/proto"
 
 import { Tabs as UITabs } from "baseui/tabs-motion"
 import Tabs, { TabProps } from "./Tabs"

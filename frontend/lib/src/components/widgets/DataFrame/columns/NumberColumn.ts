@@ -16,9 +16,9 @@
 
 import { GridCell, GridCellKind, NumberCell } from "@glideapps/glide-data-grid"
 
-import { Quiver } from "src/dataframes/Quiver"
-import { notNullOrUndefined, isNullOrUndefined } from "src/util/utils"
-import { isIntegerType } from "src/components/widgets/DataFrame/isIntegerType"
+import { Quiver } from "@st-lib/dataframes/Quiver"
+import { notNullOrUndefined, isNullOrUndefined } from "@st-lib/util/utils"
+import { isIntegerType } from "@st-lib/components/widgets/DataFrame/isIntegerType"
 
 import {
   BaseColumn,

@@ -15,10 +15,10 @@
  */
 
 import React from "react"
-import { mount } from "src/test_util"
+import { mount } from "@st-lib/test_util"
 
-import StreamlitMarkdown from "src/components/shared/StreamlitMarkdown"
-import { Exception as ExceptionProto } from "src/proto"
+import StreamlitMarkdown from "@st-lib/components/shared/StreamlitMarkdown"
+import { Exception as ExceptionProto } from "@st-lib/proto"
 import ExceptionElement, { ExceptionElementProps } from "./ExceptionElement"
 
 const getProps = (

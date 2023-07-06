@@ -17,13 +17,13 @@
 import React from "react"
 import { ThemeProvider as BaseUIThemeProvider } from "baseui"
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react"
-import { shallow } from "src/test_util"
+import { shallow } from "@st-lib/test_util"
 import {
   darkTheme,
   baseuiDarkTheme,
   lightTheme,
   baseuiLightTheme,
-} from "src/theme"
+} from "@st-lib/theme"
 import ThemeProvider from "./ThemeProvider"
 
 describe("ThemeProvider component", () => {

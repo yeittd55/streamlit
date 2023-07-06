@@ -16,12 +16,12 @@
 
 import { ReactWrapper } from "enzyme"
 import React from "react"
-import { mount } from "src/test_util"
+import { mount } from "@st-lib/test_util"
 import { StatefulPopover as UIPopover } from "baseui/popover"
-import { ColorPicker as ColorPickerProto } from "src/proto"
-import { WidgetStateManager } from "src/WidgetStateManager"
+import { ColorPicker as ColorPickerProto } from "@st-lib/proto"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
 import { ChromePicker } from "react-color"
-import { StyledChromePicker } from "src/components/shared/BaseColorPicker/styled-components"
+import { StyledChromePicker } from "@st-lib/components/shared/BaseColorPicker/styled-components"
 
 import ColorPicker, { Props } from "./ColorPicker"
 

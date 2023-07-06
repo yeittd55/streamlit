@@ -15,18 +15,18 @@
  */
 
 import React from "react"
-import { shallow } from "src/test_util"
-import { WidgetStateManager } from "src/WidgetStateManager"
+import { shallow } from "@st-lib/test_util"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
 
-import BaseButton from "src/components/shared/BaseButton"
-import StreamlitMarkdown from "src/components/shared/StreamlitMarkdown"
+import BaseButton from "@st-lib/components/shared/BaseButton"
+import StreamlitMarkdown from "@st-lib/components/shared/StreamlitMarkdown"
 
-import { DownloadButton as DownloadButtonProto } from "src/proto"
-import { mockEndpoints } from "src/mocks/mocks"
+import { DownloadButton as DownloadButtonProto } from "@st-lib/proto"
+import { mockEndpoints } from "@st-lib/mocks/mocks"
 import DownloadButton, { Props } from "./DownloadButton"
 
-jest.mock("src/WidgetStateManager")
-jest.mock("src/StreamlitEndpoints")
+jest.mock("@st-lib/WidgetStateManager")
+jest.mock("@st-lib/StreamlitEndpoints")
 
 const getProps = (elementProps: Partial<DownloadButtonProto> = {}): Props => ({
   element: DownloadButtonProto.create({

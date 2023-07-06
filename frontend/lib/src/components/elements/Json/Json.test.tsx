@@ -15,9 +15,9 @@
  */
 
 import React from "react"
-import { mount } from "src/test_util"
-import { Json as JsonProto } from "src/proto"
-import * as themeUtils from "src/theme/utils"
+import { mount } from "@st-lib/test_util"
+import { Json as JsonProto } from "@st-lib/proto"
+import * as themeUtils from "@st-lib/theme/utils"
 import Json, { JsonProps } from "./Json"
 
 const getProps = (elementProps: Partial<JsonProto> = {}): JsonProps => ({

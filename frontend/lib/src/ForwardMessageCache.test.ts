@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { ForwardMsg } from "src/proto"
-import { ForwardMsgCache } from "src/ForwardMessageCache"
+import { ForwardMsg } from "@st-lib/proto"
+import { ForwardMsgCache } from "@st-lib/ForwardMessageCache"
 
 interface MockCache {
   cache: ForwardMsgCache

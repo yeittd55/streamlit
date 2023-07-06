@@ -18,11 +18,11 @@ import { ShallowWrapper } from "enzyme"
 import {
   LabelVisibilityMessage as LabelVisibilityMessageProto,
   NumberInput as NumberInputProto,
-} from "src/proto"
+} from "@st-lib/proto"
 import React from "react"
-import { mount, shallow } from "src/test_util"
+import { mount, shallow } from "@st-lib/test_util"
 import { Input as UIInput } from "baseui/input"
-import { WidgetStateManager } from "src/WidgetStateManager"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
 
 import NumberInput, { Props, State } from "./NumberInput"
 

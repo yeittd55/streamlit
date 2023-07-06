@@ -19,14 +19,14 @@ import {
   ArrowTable as ArrowTableProto,
   FileUploaderState as FileUploaderStateProto,
   UploadedFileInfo as UploadedFileInfoProto,
-} from "src/proto"
+} from "@st-lib/proto"
 import {
   createFormsData,
   FormsData,
   WidgetInfo,
   WidgetStateDict,
   WidgetStateManager,
-} from "src/WidgetStateManager"
+} from "@st-lib/WidgetStateManager"
 
 const MOCK_ARROW_TABLE = new ArrowTableProto({
   data: new Uint8Array(),

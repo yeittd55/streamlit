@@ -15,16 +15,16 @@
  */
 
 import React from "react"
-import { shallow } from "src/test_util"
-import { WidgetStateManager } from "src/WidgetStateManager"
+import { shallow } from "@st-lib/test_util"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
 
-import BaseButton from "src/components/shared/BaseButton"
-import StreamlitMarkdown from "src/components/shared/StreamlitMarkdown"
+import BaseButton from "@st-lib/components/shared/BaseButton"
+import StreamlitMarkdown from "@st-lib/components/shared/StreamlitMarkdown"
 
-import { Button as ButtonProto } from "src/proto"
+import { Button as ButtonProto } from "@st-lib/proto"
 import Button, { Props } from "./Button"
 
-jest.mock("src/WidgetStateManager")
+jest.mock("@st-lib/WidgetStateManager")
 
 const sendBackMsg = jest.fn()
 

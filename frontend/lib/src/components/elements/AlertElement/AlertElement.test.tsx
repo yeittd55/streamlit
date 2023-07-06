@@ -16,9 +16,9 @@
 
 import React from "react"
 
-import { shallow } from "src/test_util"
-import { Kind } from "src/components/shared/AlertContainer"
-import { Alert as AlertProto } from "src/proto"
+import { shallow } from "@st-lib/test_util"
+import { Kind } from "@st-lib/components/shared/AlertContainer"
+import { Alert as AlertProto } from "@st-lib/proto"
 import AlertElement, {
   AlertElementProps,
   getAlertElementKind,

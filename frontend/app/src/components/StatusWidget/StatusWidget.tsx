@@ -34,15 +34,15 @@ import { HotKeys } from "react-hotkeys"
 import { CSSTransition } from "react-transition-group"
 import { SignalConnection } from "typed-signals"
 
-import { ConnectionState } from "src/connection/ConnectionState"
-import { SessionEventDispatcher } from "src/SessionEventDispatcher"
+import { ConnectionState } from "@st-app/connection/ConnectionState"
+import { SessionEventDispatcher } from "@st-app/SessionEventDispatcher"
 
 /*
  * IMPORTANT: If you change the asset import below, make sure it still works if Streamlit is served
  * from a subpath.
  */
-import iconRunning from "src/assets/img/icon_running.gif"
-import newYearsRunning from "src/assets/img/fireworks.gif"
+import iconRunning from "@st-app/assets/img/icon_running.gif"
+import newYearsRunning from "@st-app/assets/img/fireworks.gif"
 
 import {
   StyledConnectionStatus,

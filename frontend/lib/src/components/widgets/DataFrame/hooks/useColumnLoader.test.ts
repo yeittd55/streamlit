@@ -16,9 +16,9 @@
 
 import { renderHook } from "@testing-library/react-hooks"
 
-import { Quiver } from "src/dataframes/Quiver"
-import { Arrow as ArrowProto } from "src/proto"
-import { UNICODE } from "src/mocks/arrow"
+import { Quiver } from "@st-lib/dataframes/Quiver"
+import { Arrow as ArrowProto } from "@st-lib/proto"
+import { UNICODE } from "@st-lib/mocks/arrow"
 import {
   BaseColumn,
   ObjectColumn,
@@ -28,7 +28,7 @@ import {
   ListColumn,
   NumberColumn,
   ColumnCreator,
-} from "src/components/widgets/DataFrame/columns"
+} from "@st-lib/components/widgets/DataFrame/columns"
 
 import useColumnLoader, {
   ColumnConfigProps,

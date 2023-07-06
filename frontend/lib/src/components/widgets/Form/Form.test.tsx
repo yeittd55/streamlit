@@ -15,10 +15,10 @@
  */
 
 import React from "react"
-import { Kind } from "src/components/shared/AlertContainer"
-import { ScriptRunState } from "src/ScriptRunState"
-import { shallow } from "src/test_util"
-import { WidgetStateManager } from "src/WidgetStateManager"
+import { Kind } from "@st-lib/components/shared/AlertContainer"
+import { ScriptRunState } from "@st-lib/ScriptRunState"
+import { shallow } from "@st-lib/test_util"
+import { WidgetStateManager } from "@st-lib/WidgetStateManager"
 import { Form, Props } from "./Form"
 
 describe("Form", () => {

@@ -17,12 +17,12 @@
 import React, { ReactElement } from "react"
 import { Map as ImmutableMap } from "immutable"
 import { range } from "lodash"
-import { toFormattedString } from "src/util/format"
+import { toFormattedString } from "@st-lib/util/format"
 import {
   dataFrameGet,
   dataFrameGetDimensions,
-} from "src/dataframes/dataFrameProto"
-import withFullScreenWrapper from "src/hocs/withFullScreenWrapper"
+} from "@st-lib/dataframes/dataFrameProto"
+import withFullScreenWrapper from "@st-lib/hocs/withFullScreenWrapper"
 import {
   StyledTable,
   StyledEmptyTableCell,

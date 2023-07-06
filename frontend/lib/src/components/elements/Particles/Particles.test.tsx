@@ -15,7 +15,7 @@
  */
 
 import React, { FC } from "react"
-import { mount } from "src/test_util"
+import { mount } from "@st-lib/test_util"
 
 import Particles, { ParticleProps, Props } from "./Particles"
 

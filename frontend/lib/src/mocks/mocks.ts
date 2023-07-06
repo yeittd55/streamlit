@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { Props as SessionInfoProps, SessionInfo } from "src/SessionInfo"
-import { StreamlitEndpoints } from "src/StreamlitEndpoints"
+import { Props as SessionInfoProps, SessionInfo } from "@st-lib/SessionInfo"
+import { StreamlitEndpoints } from "@st-lib/StreamlitEndpoints"
 
 /** Create mock SessionInfo.props */
 export function mockSessionInfoProps(

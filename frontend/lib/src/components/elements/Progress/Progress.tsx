@@ -15,10 +15,10 @@
  */
 
 import React, { ReactElement } from "react"
-import { Progress as ProgressProto } from "src/proto"
-import ProgressBar from "src/components/shared/ProgressBar"
-import { StyledCaptionText } from "src/components/elements/Progress/styled-components"
-import StreamlitMarkdown from "src/components/shared/StreamlitMarkdown"
+import { Progress as ProgressProto } from "@st-lib/proto"
+import ProgressBar from "@st-lib/components/shared/ProgressBar"
+import { StyledCaptionText } from "@st-lib/components/elements/Progress/styled-components"
+import StreamlitMarkdown from "@st-lib/components/shared/StreamlitMarkdown"
 
 export interface ProgressProps {
   width: number

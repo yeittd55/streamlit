@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { mockEndpoints } from "src/mocks/mocks"
+import { mockEndpoints } from "@st-lib/mocks/mocks"
 import { ComponentRegistry } from "./ComponentRegistry"
 
 describe("ComponentRegistry", () => {

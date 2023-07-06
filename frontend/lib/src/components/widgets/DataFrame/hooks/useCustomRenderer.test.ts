@@ -20,7 +20,7 @@ import {
   BaseColumn,
   TextColumn,
   NumberColumn,
-} from "src/components/widgets/DataFrame/columns"
+} from "@st-lib/components/widgets/DataFrame/columns"
 
 import useCustomRenderer from "./useCustomRenderer"
 
