@@ -32,12 +32,21 @@ import StreamlitMarkdown from "@streamlit/lib/src/components/shared/StreamlitMar
 import { Kind } from "@streamlit/lib/src/components/shared/AlertContainer"
 import AlertElement from "@streamlit/lib/src/components/elements/AlertElement/AlertElement"
 
-import { StyledViewButton, StyledToastMessage } from "./styled-components"
+import {
+  StyledViewButton,
+  StyledToastMessage,
+  ThemedStyledToastSpinner,
+} from "./styled-components"
 
+// TODO:
+// Clean up logic for truncating messages.
+// Fix custom theme check for spinner.
+// Add tests.
 export interface ToastProps {
   theme: EmotionTheme
   body: string
   icon?: string
+  cache: boolean
   width: number
 }
 
@@ -89,11 +98,13 @@ function generateToastOverrides(
 }
 
 // Function used to truncate toast messages that are longer than three lines.
-function shortenMessage(fullMessage: string): string {
-  const characterLimit = 114
+function shortenMessage(fullMessage: string, cache: boolean): string {
+  const characterLimit = cache ? 100 : 114
 
   if (fullMessage.length > characterLimit) {
-    let message = fullMessage.replace(/^(.{114}[^\s]*).*/, "$1")
+    let message = cache
+      ? fullMessage.replace(/^(.{100}[^\s]*).*/, "$1")
+      : fullMessage.replace(/^(.{114}[^\s]*).*/, "$1")
 
     if (message.length > characterLimit) {
       message = message.split(" ").slice(0, -1).join(" ")
@@ -105,9 +116,15 @@ function shortenMessage(fullMessage: string): string {
   return fullMessage
 }
 
-export function Toast({ theme, body, icon, width }: ToastProps): ReactElement {
+export function Toast({
+  theme,
+  body,
+  icon,
+  cache,
+  width,
+}: ToastProps): ReactElement {
   const fullMessage = icon ? `${icon}&ensp;${body}` : body
-  const displayMessage = shortenMessage(fullMessage)
+  const displayMessage = shortenMessage(fullMessage, cache)
   const shortened = fullMessage !== displayMessage
 
   const [expanded, setExpanded] = useState(!shortened)
@@ -126,6 +143,13 @@ export function Toast({ theme, body, icon, width }: ToastProps): ReactElement {
     () => (
       <>
         <StyledToastMessage expanded={expanded}>
+          {cache && (
+            <ThemedStyledToastSpinner
+              $size={theme.iconSizes.twoXL}
+              // TODO: mayagbarnes - fix custom theme check
+              $usingCustomTheme={false}
+            />
+          )}
           <StreamlitMarkdown
             source={expanded ? fullMessage : displayMessage}
             allowHTML={false}
@@ -150,6 +174,7 @@ export function Toast({ theme, body, icon, width }: ToastProps): ReactElement {
     // Uses toaster utility to create toast on mount and generate unique key
     // to reference that toast for update/removal
     const newKey = toaster.info(toastContent, {
+      autoHideDuration: cache ? 0 : 4000,
       overrides: { ...styleOverrides },
     })
     setToastKey(newKey)
@@ -171,6 +196,7 @@ export function Toast({ theme, body, icon, width }: ToastProps): ReactElement {
     // Handles expand/collapse button behavior for long toast messages
     toaster.update(toastKey, {
       children: toastContent,
+      autoHideDuration: cache ? 0 : 4000,
       overrides: { ...styleOverrides },
     })
   }, [toastKey, toastContent, styleOverrides])
