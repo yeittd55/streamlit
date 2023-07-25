@@ -36,7 +36,10 @@ import {
   StyledViewButton,
   StyledToastMessage,
   ThemedStyledToastSpinner,
+  StyledTimeElapsed,
+  StyledToastActions,
 } from "./styled-components"
+import { useTimeElapsed } from "@streamlit/lib/src/util/Hooks"
 
 // TODO:
 // Clean up logic for truncating messages.
@@ -48,6 +51,7 @@ export interface ToastProps {
   icon?: string
   cache: boolean
   duration: number
+  showElapsed: boolean
   width: number
 }
 
@@ -81,7 +85,7 @@ function generateToastOverrides(
     },
     InnerContainer: {
       style: {
-        maxHeight: expanded ? "none" : "88px",
+        maxHeight: expanded ? "none" : "98px",
         overflow: "hidden",
         fontSize: theme.fontSizes.sm,
         lineHeight: "1.4rem",
@@ -123,18 +127,35 @@ export function Toast({
   icon,
   cache,
   duration,
+  showElapsed,
   width,
 }: ToastProps): ReactElement {
   const fullMessage = icon ? `${icon}&ensp;${body}` : body
   const displayMessage = shortenMessage(fullMessage, cache)
   const shortened = fullMessage !== displayMessage
 
+  let [
+    timeElapsed,
+    subtractedTime,
+    setPauseSubtractedTime,
+    setSubtractedTime,
+  ] = useTimeElapsed()
   const [expanded, setExpanded] = useState(!shortened)
   const [toastKey, setToastKey] = useState<React.Key>(0)
 
   const handleClick = useCallback((): void => {
     setExpanded(!expanded)
   }, [expanded])
+
+  const handleMouseEnter = useCallback((): void => {
+    setSubtractedTime(0)
+    setPauseSubtractedTime(true)
+  }, [])
+
+  const handleMouseLeave = useCallback((): void => {
+    setSubtractedTime(0)
+    setPauseSubtractedTime(false)
+  }, [])
 
   const styleOverrides = useMemo(
     () => generateToastOverrides(expanded, theme),
@@ -143,7 +164,12 @@ export function Toast({
 
   const toastContent = useMemo(
     () => (
-      <>
+      <div
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onFocus={handleMouseEnter}
+        onBlur={handleMouseLeave}
+      >
         <StyledToastMessage expanded={expanded}>
           {cache && (
             <ThemedStyledToastSpinner
@@ -158,14 +184,31 @@ export function Toast({
             isToast
           />
         </StyledToastMessage>
-        {shortened && (
-          <StyledViewButton className="toastViewButton" onClick={handleClick}>
-            {expanded ? "view less" : "view more"}
-          </StyledViewButton>
-        )}
-      </>
+        <StyledToastActions>
+          {shortened && (
+            <StyledViewButton
+              className="toastViewButton"
+              onClick={handleClick}
+            >
+              {expanded ? "view less" : "view more"}
+            </StyledViewButton>
+          )}
+          {showElapsed && (
+            <StyledTimeElapsed>
+              <code>Time Elapsed: {timeElapsed} sec</code>
+            </StyledTimeElapsed>
+          )}
+        </StyledToastActions>
+      </div>
     ),
-    [shortened, expanded, fullMessage, displayMessage, handleClick]
+    [
+      shortened,
+      expanded,
+      fullMessage,
+      displayMessage,
+      timeElapsed,
+      handleClick,
+    ]
   )
 
   useEffect(() => {
@@ -195,10 +238,11 @@ export function Toast({
   }, [])
 
   useEffect(() => {
+    const timeRemaining = duration - subtractedTime * 1000
     // Handles expand/collapse button behavior for long toast messages
     toaster.update(toastKey, {
       children: toastContent,
-      autoHideDuration: cache ? 0 : duration,
+      autoHideDuration: timeRemaining,
       overrides: { ...styleOverrides },
     })
   }, [toastKey, toastContent, styleOverrides])

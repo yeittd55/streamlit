@@ -42,3 +42,37 @@ export const useIsOverflowing = (
 
   return isOverflowing
 }
+
+// Returns the number of seconds elapsed to display for toasts
+export const useTimeElapsed = (): any[] => {
+  const [timeElapsed, setTimeElapsed] = useState(0)
+  const [subtractedTime, setSubtractedTime] = useState(0)
+  const [pauseSubtractedTime, setPauseSubtractedTime] = useState(false)
+
+  useEffect(() => {
+    // Increment timeElapsed every second
+    const timeElapsedInterval = setInterval(() => {
+      setTimeElapsed(timeElapsed + 1)
+    }, 1000)
+
+    // Increment subtractedTime every second unless paused
+    const subtractedTimeInterval = setInterval(() => {
+      if (!pauseSubtractedTime) {
+        setSubtractedTime(subtractedTime + 1)
+      }
+    }, 1000)
+
+    // Clear timer on unmount
+    return () => {
+      clearInterval(timeElapsedInterval)
+      clearInterval(subtractedTimeInterval)
+    }
+  }, [timeElapsed, subtractedTime])
+
+  return [
+    timeElapsed,
+    subtractedTime,
+    setPauseSubtractedTime,
+    setSubtractedTime,
+  ]
+}

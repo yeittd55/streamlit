@@ -718,6 +718,7 @@ const RawElementNodeRenderer = (
           icon={toastProto.icon}
           cache={toastProto.cache}
           duration={toastProto.duration}
+          showElapsed={toastProto.showElapsed}
           width={width}
         />
       )

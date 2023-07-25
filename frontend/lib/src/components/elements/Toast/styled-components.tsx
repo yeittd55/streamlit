@@ -62,8 +62,23 @@ interface StyledToastMessageProps {
 export const StyledToastMessage = styled.div<StyledToastMessageProps>(
   ({ theme, expanded }) => ({
     display: "flex",
-    // justifyContent: "flex-start",
     alignItems: "center",
     maxHeight: expanded ? "none" : theme.breakpoints.toast,
+    marginBottom: "4px",
   })
 )
+
+export const StyledToastActions = styled.div(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  marginTop: theme.spacing.twoXS,
+}))
+
+export const StyledTimeElapsed = styled.div(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: theme.fontSizes.sm,
+  color: theme.colors.fadedText60,
+}))

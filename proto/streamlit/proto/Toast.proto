@@ -28,4 +28,7 @@ message Toast {
 
     // Duration of toast
     int32 duration = 4;
+
+    // Show elapsed time
+    bool show_elapsed = 5;
 }

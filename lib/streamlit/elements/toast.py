@@ -41,6 +41,7 @@ class ToastMixin:
         icon: Optional[str] = None,
         cache: Optional[bool] = False,
         duration: Optional[int] = 4,
+        show_elapsed: Optional[bool] = False,
     ) -> "DeltaGenerator":
         """Display a short message, known as a notification "toast".
         The toast appears in the app's bottom-right corner and disappears after four seconds.
@@ -76,7 +77,7 @@ class ToastMixin:
         >>>
         >>> st.toast('Your edited image was saved!', icon='😍')
         """
-        return Toast(body, icon, cache, duration, self.dg)
+        return Toast(body, icon, cache, duration, show_elapsed, self.dg)
 
     @property
     def dg(self) -> "DeltaGenerator":
@@ -85,12 +86,21 @@ class ToastMixin:
 
 
 class Toast:
-    def __init__(self, body, icon=None, cache=False, duration=4, delta_generator=None):
+    def __init__(
+        self,
+        body,
+        icon=None,
+        cache=False,
+        duration=4,
+        show_elapsed=False,
+        delta_generator=None,
+    ):
         self.toast_proto = ToastProto()
         self.toast_proto.body = clean_text(validate_text(body))
         self.toast_proto.icon = validate_emoji(icon)
         self.toast_proto.cache = cache
         self.toast_proto.duration = duration * 1000  # convert to milliseconds
+        self.toast_proto.show_elapsed = show_elapsed
         self.delta_reference = delta_generator._enqueue("toast", self.toast_proto)
 
     def __enter__(self):
