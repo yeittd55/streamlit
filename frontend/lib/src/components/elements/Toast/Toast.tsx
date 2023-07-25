@@ -47,6 +47,7 @@ export interface ToastProps {
   body: string
   icon?: string
   cache: boolean
+  duration: number
   width: number
 }
 
@@ -121,6 +122,7 @@ export function Toast({
   body,
   icon,
   cache,
+  duration,
   width,
 }: ToastProps): ReactElement {
   const fullMessage = icon ? `${icon}&ensp;${body}` : body
@@ -174,7 +176,7 @@ export function Toast({
     // Uses toaster utility to create toast on mount and generate unique key
     // to reference that toast for update/removal
     const newKey = toaster.info(toastContent, {
-      autoHideDuration: cache ? 0 : 4000,
+      autoHideDuration: cache ? 0 : duration,
       overrides: { ...styleOverrides },
     })
     setToastKey(newKey)
@@ -196,7 +198,7 @@ export function Toast({
     // Handles expand/collapse button behavior for long toast messages
     toaster.update(toastKey, {
       children: toastContent,
-      autoHideDuration: cache ? 0 : 4000,
+      autoHideDuration: cache ? 0 : duration,
       overrides: { ...styleOverrides },
     })
   }, [toastKey, toastContent, styleOverrides])

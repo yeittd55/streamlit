@@ -25,4 +25,7 @@ message Toast {
 
     // Used for caching
     bool cache = 3;
+
+    // Duration of toast
+    int32 duration = 4;
 }
