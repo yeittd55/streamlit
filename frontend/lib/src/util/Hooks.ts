@@ -67,7 +67,7 @@ export const useTimeElapsed = (): any[] => {
       clearInterval(timeElapsedInterval)
       clearInterval(subtractedTimeInterval)
     }
-  }, [timeElapsed, subtractedTime])
+  }, [pauseSubtractedTime, timeElapsed, subtractedTime])
 
   return [
     timeElapsed,

@@ -134,7 +134,7 @@ export function Toast({
   const displayMessage = shortenMessage(fullMessage, cache)
   const shortened = fullMessage !== displayMessage
 
-  let [
+  const [
     timeElapsed,
     subtractedTime,
     setPauseSubtractedTime,
@@ -150,12 +150,12 @@ export function Toast({
   const handleMouseEnter = useCallback((): void => {
     setSubtractedTime(0)
     setPauseSubtractedTime(true)
-  }, [])
+  }, [setPauseSubtractedTime, setSubtractedTime])
 
   const handleMouseLeave = useCallback((): void => {
     setSubtractedTime(0)
     setPauseSubtractedTime(false)
-  }, [])
+  }, [setPauseSubtractedTime, setSubtractedTime])
 
   const styleOverrides = useMemo(
     () => generateToastOverrides(expanded, theme),
@@ -202,12 +202,17 @@ export function Toast({
       </div>
     ),
     [
+      theme.iconSizes.twoXL,
+      cache,
       shortened,
       expanded,
       fullMessage,
       displayMessage,
       timeElapsed,
       handleClick,
+      showElapsed,
+      handleMouseEnter,
+      handleMouseLeave,
     ]
   )
 
@@ -245,7 +250,7 @@ export function Toast({
       autoHideDuration: timeRemaining,
       overrides: { ...styleOverrides },
     })
-  }, [toastKey, toastContent, styleOverrides])
+  }, [duration, subtractedTime, toastKey, toastContent, styleOverrides])
 
   const sidebarErrorMessage = (
     <AlertElement

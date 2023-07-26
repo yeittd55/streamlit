@@ -54,6 +54,8 @@ const getProps = (
 ): ToastProps => ({
   body: "This is a toast message",
   icon: "🐶",
+  duration: 4000,
+  showElapsed: false,
   theme: {
     ...mockTheme.emotion,
     ...themeProps,
