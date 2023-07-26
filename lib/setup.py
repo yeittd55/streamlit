@@ -31,6 +31,7 @@ NAME = "streamlit"
 # - Always include the lower bound as >= VERSION, to keep testing min versions easy
 # - And include an upper bound that's < NEXT_MAJOR_VERSION
 INSTALL_REQUIRES = [
+    "puremagic>=1.1.0, <1.16.0",
     "altair>=4.0, <6",
     "blinker>=1.0.0, <2",
     "cachetools>=4.0, <6",
@@ -42,7 +43,6 @@ INSTALL_REQUIRES = [
     # Lowest version with available wheel for 3.7 + amd64 + linux
     "pandas>=1.3.0, <3",
     "pillow>=7.1.0, <10",
-    "filetype>=0.1.0, <1.0.0",
     # Python protobuf 4.21 (the first 4.x version) is compatible with protobufs
     # generated from `protoc` >= 3.20. (`protoc` is installed separately from the Python
     # protobuf package, so this pin doesn't actually enforce a `protoc` minimum version.
