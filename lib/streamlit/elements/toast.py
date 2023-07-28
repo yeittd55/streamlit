@@ -108,13 +108,22 @@ class Toast:
             icon = None
         else:
             icon = self.toast_proto.icon
-        return self.delta_reference.toast(self.toast_proto.body, icon=icon, cache=True)
+        return self.delta_reference.toast(
+            self.toast_proto.body,
+            icon=icon,
+            cache=True,
+            duration=self.toast_proto.duration,
+            show_elapsed=self.toast_proto.show_elapsed,
+        )
 
     def __exit__(self, *args, **kwargs):
         self.delta_reference.empty()
 
-    def update(self, body, icon=None, cache=False):
-        self.delta_reference.toast(body, icon=icon, cache=cache)
+    def update(self, body, icon, cache=False, duration=4, show_elapsed=False):
+        cache = self.toast_proto.cache or cache
+        self.delta_reference.toast(
+            body, icon=icon, cache=cache, duration=duration, show_elapsed=show_elapsed
+        )
 
     def clear(self):
         self.delta_reference.empty()

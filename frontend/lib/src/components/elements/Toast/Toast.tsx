@@ -138,7 +138,7 @@ export function Toast({
     timeElapsed,
     subtractedTime,
     setPauseSubtractedTime,
-    setSubtractedTime,
+    // setSubtractedTime,
   ] = useTimeElapsed()
   const [expanded, setExpanded] = useState(!shortened)
   const [toastKey, setToastKey] = useState<React.Key>(0)
@@ -148,14 +148,14 @@ export function Toast({
   }, [expanded])
 
   const handleMouseEnter = useCallback((): void => {
-    setSubtractedTime(0)
+    // setSubtractedTime(0)
     setPauseSubtractedTime(true)
-  }, [setPauseSubtractedTime, setSubtractedTime])
+  }, [setPauseSubtractedTime])
 
   const handleMouseLeave = useCallback((): void => {
-    setSubtractedTime(0)
+    // setSubtractedTime(0)
     setPauseSubtractedTime(false)
-  }, [setPauseSubtractedTime, setSubtractedTime])
+  }, [setPauseSubtractedTime])
 
   const styleOverrides = useMemo(
     () => generateToastOverrides(expanded, theme),
@@ -243,14 +243,39 @@ export function Toast({
   }, [])
 
   useEffect(() => {
-    const timeRemaining = duration - subtractedTime * 1000
-    // Handles expand/collapse button behavior for long toast messages
-    toaster.update(toastKey, {
-      children: toastContent,
-      autoHideDuration: timeRemaining,
-      overrides: { ...styleOverrides },
-    })
-  }, [duration, subtractedTime, toastKey, toastContent, styleOverrides])
+    // Handles updating toast message when time elapsed is shown
+    if (showElapsed) {
+      const timeRemaining = duration - subtractedTime * 1000
+      toaster.update(toastKey, {
+        children: toastContent,
+        autoHideDuration: timeRemaining,
+        overrides: { ...styleOverrides },
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeElapsed, duration, subtractedTime])
+
+  useEffect(() => {
+    // Handles expand/collapse button behavior for long toast messages & content updates
+    if (!cache) {
+      const timeRemaining = duration - subtractedTime * 1000
+
+      toaster.update(toastKey, {
+        children: toastContent,
+        autoHideDuration: timeRemaining,
+        overrides: { ...styleOverrides },
+      })
+    }
+
+    if (cache) {
+      toaster.update(toastKey, {
+        children: toastContent,
+        autoHideDuration: 0,
+        overrides: { ...styleOverrides },
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cache, expanded, toastContent, styleOverrides])
 
   const sidebarErrorMessage = (
     <AlertElement
