@@ -39,7 +39,7 @@ import { registerLoaders } from "@loaders.gl/core"
 import withFullScreenWrapper from "@streamlit/lib/src/hocs/withFullScreenWrapper"
 import withMapboxToken from "@streamlit/lib/src/hocs/withMapboxToken"
 
-import { notNullOrUndefined } from "@streamlit/lib/src/util/utils"
+import { hashString, notNullOrUndefined } from "@streamlit/lib/src/util/utils"
 
 import { DeckGlJsonChart as DeckGlJsonChartProto } from "@streamlit/lib/src/proto"
 import {
@@ -90,6 +90,9 @@ interface State {
 }
 
 export const DEFAULT_DECK_GL_HEIGHT = 500
+let hashedJson: string
+// @ts-expect-error
+let oldJson
 
 export class DeckGlJsonChart extends PureComponent<PropsWithHeight, State> {
   readonly state = {
@@ -116,7 +119,6 @@ export class DeckGlJsonChart extends PureComponent<PropsWithHeight, State> {
     state: Partial<State>
   ): Partial<State> | null {
     const deck = DeckGlJsonChart.getDeckObject(props)
-
     // If the ViewState on the server has changed, apply the diff to the current state
     if (!isEqual(deck.initialViewState, state.initialViewState)) {
       const diff = Object.keys(deck.initialViewState).reduce(
@@ -145,34 +147,74 @@ export class DeckGlJsonChart extends PureComponent<PropsWithHeight, State> {
   }
 
   static getDeckObject = (props: PropsWithHeight): DeckObject => {
+    console.log("Beginning getDeckObject")
     const { element, width, height, theme } = props
-    const json = JSON.parse(element.json)
+    const newHashedJson = hashString(JSON.stringify(element.json))
+    // initialize if uninitialized
+    if (hashedJson === undefined) {
+      console.log("initializing hashedJson")
+      hashedJson = hashString(JSON.stringify(element.json))
+      oldJson = JSON.parse(element.json)
 
-    // If unset, use either the Mapbox light or dark style based on Streamlit's theme
-    // For Mapbox styles, see https://docs.mapbox.com/api/maps/styles/#mapbox-styles
-    if (!notNullOrUndefined(json.mapStyle)) {
-      const mapTheme = hasLightBackgroundColor(theme) ? "light" : "dark"
-      json.mapStyle = `mapbox://styles/mapbox/${mapTheme}-v9`
-    }
-
-    // The graph dimensions could be set from props ( like withFullscreen ) or
-    // from the generated element object
-    if (height) {
-      json.initialViewState.height = height
-      json.initialViewState.width = width
-    } else {
-      if (!json.initialViewState.height) {
-        json.initialViewState.height = DEFAULT_DECK_GL_HEIGHT
+      // If unset, use either the Mapbox light or dark style based on Streamlit's theme
+      // For Mapbox styles, see https://docs.mapbox.com/api/maps/styles/#mapbox-styles
+      if (!notNullOrUndefined(oldJson.mapStyle)) {
+        const mapTheme = hasLightBackgroundColor(theme) ? "light" : "dark"
+        oldJson.mapStyle = `mapbox://styles/mapbox/${mapTheme}-v9`
       }
 
-      if (element.useContainerWidth) {
+      // The graph dimensions could be set from props ( like withFullscreen ) or
+      // from the generated element object
+      if (height) {
+        oldJson.initialViewState.height = height
+        oldJson.initialViewState.width = width
+      } else {
+        if (!oldJson.initialViewState.height) {
+          oldJson.initialViewState.height = DEFAULT_DECK_GL_HEIGHT
+        }
+
+        if (element.useContainerWidth) {
+          oldJson.initialViewState.width = width
+        }
+      }
+
+      delete oldJson.views // We are not using views. This avoids a console warning.
+    }
+    if (!isEqual(newHashedJson, hashedJson)) {
+      console.log("New json object")
+      const json = JSON.parse(element.json)
+      hashedJson = hashString(JSON.stringify(json))
+      // If unset, use either the Mapbox light or dark style based on Streamlit's theme
+      // For Mapbox styles, see https://docs.mapbox.com/api/maps/styles/#mapbox-styles
+      if (!notNullOrUndefined(json.mapStyle)) {
+        const mapTheme = hasLightBackgroundColor(theme) ? "light" : "dark"
+        json.mapStyle = `mapbox://styles/mapbox/${mapTheme}-v9`
+      }
+
+      // The graph dimensions could be set from props ( like withFullscreen ) or
+      // from the generated element object
+      if (height) {
+        json.initialViewState.height = height
         json.initialViewState.width = width
+      } else {
+        if (!json.initialViewState.height) {
+          json.initialViewState.height = DEFAULT_DECK_GL_HEIGHT
+        }
+
+        if (element.useContainerWidth) {
+          json.initialViewState.width = width
+        }
       }
+
+      delete json.views // We are not using views. This avoids a console warning.
+
+      console.log("end new json object")
+      return jsonConverter.convert(json)
     }
+    console.log("End getDeckObject")
 
-    delete json.views // We are not using views. This avoids a console warning.
-
-    return jsonConverter.convert(json)
+    // @ts-expect-error
+    return jsonConverter.convert(oldJson)
   }
 
   createTooltip = (info: PickingInfo): Record<string, unknown> | boolean => {
