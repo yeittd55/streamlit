@@ -106,6 +106,7 @@ export class DeckGlJsonChart extends PureComponent<PropsWithHeight, State> {
   }
 
   componentDidMount = (): void => {
+    console.log("componentDidMountCalled")
     // HACK: Load layers a little after loading the map, to hack around a bug
     // where HexagonLayers were not drawing on first load but did load when the
     // script got re-executed.
@@ -181,7 +182,9 @@ export class DeckGlJsonChart extends PureComponent<PropsWithHeight, State> {
       delete oldJson.views // We are not using views. This avoids a console warning.
     }
     if (!isEqual(newHashedJson, hashedJson)) {
-      console.log("New json object")
+      console.log(`NewHashedJson: ${newHashedJson}`)
+      console.log(`OldHashedJson: ${hashedJson}`)
+      console.log("Parsing new json object")
       const json = JSON.parse(element.json)
       hashedJson = hashString(JSON.stringify(json))
       // If unset, use either the Mapbox light or dark style based on Streamlit's theme
@@ -208,7 +211,7 @@ export class DeckGlJsonChart extends PureComponent<PropsWithHeight, State> {
 
       delete json.views // We are not using views. This avoids a console warning.
 
-      console.log("end new json object")
+      console.log("end parsing new json object and updating it")
       return jsonConverter.convert(json)
     }
     console.log("End getDeckObject")
@@ -237,6 +240,7 @@ export class DeckGlJsonChart extends PureComponent<PropsWithHeight, State> {
   }
 
   interpolate = (info: PickingInfo, body: string): string => {
+    console.log("interpolate")
     const matchedVariables = body.match(/{(.*?)}/g)
     if (matchedVariables) {
       matchedVariables.forEach((match: string) => {
@@ -251,6 +255,7 @@ export class DeckGlJsonChart extends PureComponent<PropsWithHeight, State> {
   }
 
   onViewStateChange = ({ viewState }: State): void => {
+    console.log("onViewStateChange")
     this.setState({ viewState })
   }
 
