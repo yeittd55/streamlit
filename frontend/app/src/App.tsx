@@ -92,6 +92,7 @@ import {
   PageNotFound,
   PageProfile,
   PagesChanged,
+  ParentMessage,
   SessionEvent,
   SessionStatus,
   WidgetStates,
@@ -552,6 +553,10 @@ export class App extends PureComponent<Props, State> {
     })
   }
 
+  handleParentMessage = (parentMessage: ParentMessage): void => {
+    console.log("Received parent message:", parentMessage.message)
+  }
+
   /**
    * Callback when we get a message from the server.
    */
@@ -595,6 +600,8 @@ export class App extends PureComponent<Props, State> {
           this.handlePageProfileMsg(pageProfile),
         fileUrlsResponse: (fileURLsResponse: FileURLsResponse) =>
           this.uploadClient.onFileURLsResponse(fileURLsResponse),
+        parentMessage: (parentMessage: ParentMessage) =>
+          this.handleParentMessage(parentMessage),
       })
     } catch (e) {
       const err = ensureError(e)
