@@ -553,8 +553,21 @@ export class App extends PureComponent<Props, State> {
     })
   }
 
-  handleParentMessage = (parentMessage: ParentMessage): void => {
-    console.log("Received parent message:", parentMessage.message)
+  handleCustomParentMessage = (parentMessage: ParentMessage): void => {
+    // if(this.state.hostConfig.enableCustomParentMessages) {
+    //   this.hostCommunicationMgr.sendMessageToHost({
+    //       type: "CUSTOM_PARENT_MESSAGE",
+    //       message: parentMessage.message,
+    //   })
+    // } else {
+    //   logError(
+    //     "Sending messages to the host is disabled in line with the platform security policy."
+    //   )
+    // }
+    console.log({
+      type: "CUSTOM_PARENT_MESSAGE",
+      message: parentMessage.message,
+    })
   }
 
   /**
@@ -601,7 +614,7 @@ export class App extends PureComponent<Props, State> {
         fileUrlsResponse: (fileURLsResponse: FileURLsResponse) =>
           this.uploadClient.onFileURLsResponse(fileURLsResponse),
         parentMessage: (parentMessage: ParentMessage) =>
-          this.handleParentMessage(parentMessage),
+          this.handleCustomParentMessage(parentMessage),
       })
     } catch (e) {
       const err = ensureError(e)

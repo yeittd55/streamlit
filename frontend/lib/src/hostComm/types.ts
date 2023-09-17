@@ -156,6 +156,10 @@ export type IGuestToHostMessage =
       type: "SCRIPT_RUN_STATE_CHANGED"
       scriptRunState: ScriptRunState
     }
+  | {
+      type: "CUSTOM_PARENT_MESSAGE"
+      message: string
+    }
 
 export type VersionedMessage<Message> = {
   stCommVersion: number
