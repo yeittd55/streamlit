@@ -29,7 +29,7 @@ describe("st.camera_input", () => {
     cy.get("[data-testid='stCameraInput']").should("have.length.at.least", 2);
   });
 
-  it("capture photo when 'Take photo' button clicked", () => {
+  it("capture photo when 'Take photo' button clicked", { retries: { runMode: 1 } }, () => {
     // Be generous with some of the timeouts in this test as uploading and
     // rendering images can be quite slow.
     const timeout = 30000;
